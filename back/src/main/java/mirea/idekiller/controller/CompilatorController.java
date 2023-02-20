@@ -16,6 +16,8 @@ public class CompilatorController {
     @PostMapping("/")
     @ResponseBody
     public String compileCode(@RequestBody CodeModel codeModel) {
+
+        log.info("Requested compilation for code: {}", codeModel.getCode());
         return codeModel.toString();
     }
 }

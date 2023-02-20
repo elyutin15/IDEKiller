@@ -6,9 +6,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
+@Data
 public class CodeModel {
     String code;
 
