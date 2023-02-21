@@ -2,23 +2,19 @@ package mirea.idekiller.model;
 
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.Data;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
 
 @Data
-public class CodeModel {
+public class Code {
     String code;
 
     @JsonIgnore
     ObjectMapper mapper;
 
     @JsonCreator
-    CodeModel(
+    public Code(
             @JsonProperty("code") String code
     ) {
         this.code = code;
