@@ -49,15 +49,26 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     const Expanded(
+<<<<<<< HEAD
                       flex: 10,
+=======
+                      flex: 20,
+>>>>>>> origin/master
                       child: SizedBox(),
                     ),
                     Expanded(
                       flex: 1,
                       child: Padding(
+<<<<<<< HEAD
                         padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
                         child: IconButton(
                           icon: const Icon(Icons.play_arrow),
+=======
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: IconButton(
+                          //icon: const Icon(Icons.play_arrow),account_circle_outlined
+                          icon: const Icon(Icons.account_circle, size: 40,),
+>>>>>>> origin/master
                           onPressed: () {
                             navigateToAnotherScreen(context, Routes.authentication);
                             // debugPrint(textController.value.text);
