@@ -18,7 +18,7 @@ public class Compiler {
 
     public Compiler(Environment env) {
         ProcessBuilder builder = new ProcessBuilder(
-                "cmd.exe", "/c", "cd C:\\Users\\Max\\Desktop\\IDEKiller\\util && touch Main.java");
+                "cmd.exe", "/c", "cd " + env.getProperty("utils.path") + " && touch Main.java");
         builder.redirectErrorStream(true);
         try {
             Process p = builder.start();
