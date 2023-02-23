@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:testas/utils/routes.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+import '../utils/routes.dart';
 
 
 class Home extends StatelessWidget {
