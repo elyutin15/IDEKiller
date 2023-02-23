@@ -6,6 +6,7 @@ import mirea.idekiller.model.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,15 +22,14 @@ public class CompilerController {
     Logger log = LoggerFactory.getLogger(CompilerController.class);
 
 
-    CompilerController() {
-        compiler = new Compiler();
+    CompilerController(Environment env) {
+        compiler = new Compiler(env);
     }
 
     @CrossOrigin(origins = {"${frontend.url}"})
     @ResponseBody
     @PostMapping("/")
     public Output compileCode(@RequestBody Code code) throws IOException {
-
         log.info("Requested compilation");
         Output out = compiler.compile(code);
         log.info("Outputted code: {}", out.getOutput());
