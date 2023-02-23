@@ -1,11 +1,12 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors
 
-import 'package:testas/controllers/login_controller.dart';
-import 'package:testas/controllers/registration_controller.dart';
-import 'package:testas/screens/auth/widgets/input_fields.dart';
-import 'package:testas/screens/auth/widgets/submit_button.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:idekiller/controllers/login_controller.dart';
+import 'package:idekiller/controllers/registration_controller.dart';
+import 'package:idekiller/screens/auth/widgets/input_fields.dart';
+import 'package:idekiller/screens/auth/widgets/submit_button.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  RegistrationController registerationController =
+  RegistrationController registrationController =
   Get.put(RegistrationController());
 
   LoginController loginController = Get.put(LoginController());
@@ -80,22 +81,22 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget registerWidget() {
     return Column(
       children: [
-        InputTextFieldWidget(registerationController.nameController, 'name'),
+        InputTextFieldWidget(registrationController.nameController, 'name'),
         SizedBox(
           height: 20,
         ),
         InputTextFieldWidget(
-            registerationController.emailController, 'email address'),
+            registrationController.emailController, 'email address'),
         SizedBox(
           height: 20,
         ),
         InputTextFieldWidget(
-            registerationController.passwordController, 'password'),
+            registrationController.passwordController, 'password'),
         SizedBox(
           height: 20,
         ),
         SubmitButton(
-          onPressed: () => registerationController.registerWithEmail(),
+          onPressed: () => registrationController.registerWithEmail(),
           title: 'Register',
         )
       ],

@@ -1,5 +1,3 @@
-import 'package:testas/screens/home.dart';
-
 import 'screens/compiler.dart';
 import 'package:flutter/material.dart';
 import 'screens/auth/auth_screen.dart';
