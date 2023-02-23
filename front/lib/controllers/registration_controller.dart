@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import '../screens/compiler.dart';
-import '../screens/home.dart';
-import '../utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:idekiller/screens/compiler.dart';
+import 'package:idekiller/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 

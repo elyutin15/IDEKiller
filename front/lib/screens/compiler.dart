@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:idekiller/DropdownButton.dart';
+import 'package:idekiller/GlobalValues.dart';
+import 'package:idekiller/utils/routes.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../utils/routes.dart';
-
 
 class Home extends StatelessWidget {
   Home({super.key});
 
   final TextEditingController textController = TextEditingController(
       text:
-      'public class Main { \n\tpublic static void main(String[] args) { \n\t\t'
+          'public class Main { \n\tpublic static void main(String[] args) { \n\t\t'
           'System.out.println(\"Hello World\")\; \n\t} \n}\n');
 
   @override
@@ -49,23 +49,21 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Expanded(
-                      flex: 20,
-                      child: SizedBox(),
+                    Container(
+                      child: LanguageDropdownButton(),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: IconButton(
-                          //icon: const Icon(Icons.play_arrow),account_circle_outlined
-                          icon: const Icon(Icons.account_circle, size: 40,),
-                          onPressed: () {
-                            navigateToAnotherScreen(context, Routes.authentication);
-                            // debugPrint(textController.value.text);
-                            // sendRequest(_controller.value.text);
-                          },
-                        ),
+                    Container(
+                      child: SizedBox(width: 20,),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(0,0,10,0),
+                      child: IconButton(
+                        icon: const Icon(Icons.play_arrow),
+                        onPressed: () {
+                          navigateToAnotherScreen(context, Routes.authentication);
+                          // debugPrint(textController.value.text);
+                          // sendRequest(textController.value.text);
+                        },
                       ),
                     ),
                   ],
@@ -82,7 +80,7 @@ class Home extends StatelessWidget {
                     child: TextField(
                       style: const TextStyle(color: Colors.white),
                       decoration:
-                      const InputDecoration(border: InputBorder.none),
+                          const InputDecoration(border: InputBorder.none),
                       controller: textController,
                       maxLines: null, //or null
                     ),
@@ -101,7 +99,11 @@ class Home extends StatelessWidget {
     var body = jsonEncode({'code': string});
     var response = await http
         .post(Uri.parse(url),
-        headers: {"Content-Type": "application/json"}, body: body)
+            headers: {
+              "Content-Type": "application/json",
+              "Compilation Language": GlobalValues.language
+            },
+            body: body)
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.contentLength}");

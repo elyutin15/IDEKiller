@@ -13,7 +13,6 @@ void main() {
     routerDelegate: VxNavigator(routes: {
       Routes.homeRoute: (_, __) => MaterialPage(child: Home()),
       Routes.authentication: (_, __) => MaterialPage(child: AuthScreen()),
-      // Routes.registrationRoute: (_, __) => const MaterialPage(child: RegistrationScreen())
     }),
   ));
 }
