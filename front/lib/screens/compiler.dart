@@ -12,8 +12,7 @@ class Home extends StatelessWidget {
 
   final TextEditingController textController = TextEditingController(
       text:
-          'public class Main { \n\tpublic static void main(String[] args) { \n\t\t'
-          'System.out.println(\"Hello World\")\; \n\t} \n}\n');
+          "public class Main { public static void main (String[] args) { System.out.println(\"Hello, World\"); }}");
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +59,9 @@ class Home extends StatelessWidget {
                       child: IconButton(
                         icon: const Icon(Icons.play_arrow),
                         onPressed: () {
-                          navigateToAnotherScreen(context, Routes.authentication);
+                          // navigateToAnotherScreen(context, Routes.authentication);
                           // debugPrint(textController.value.text);
-                          // sendRequest(textController.value.text);
+                          sendRequest(textController.value.text);
                         },
                       ),
                     ),
@@ -101,7 +100,7 @@ class Home extends StatelessWidget {
         .post(Uri.parse(url),
             headers: {
               "Content-Type": "application/json",
-              "Compilation Language": GlobalValues.language
+              "CompilationLanguage": GlobalValues.language
             },
             body: body)
         .then((http.Response response) {
