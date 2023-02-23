@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:testas/screens/home.dart';
-import 'package:testas/utils/api_endpoints.dart';
+import '../screens/compiler.dart';
+import '../screens/home.dart';
+import '../utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class RegisterationController extends GetxController {
+class RegistrationController extends GetxController {
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -39,7 +40,7 @@ class RegisterationController extends GetxController {
           nameController.clear();
           emailController.clear();
           passwordController.clear();
-          Get.off(HomeScreen());
+          Get.off(Home());
         } else {
           throw jsonDecode(response.body)["message"] ?? "Unknown Error Occured";
         }

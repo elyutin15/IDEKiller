@@ -13,8 +13,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
-  RegisterationController registerationController =
-  Get.put(RegisterationController());
+  RegistrationController registerationController =
+  Get.put(RegistrationController());
 
   LoginController loginController = Get.put(LoginController());
 
