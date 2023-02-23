@@ -1,0 +1,31 @@
+name: idekiller
+description: A new Flutter project.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0-231.0.dev <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_strategy: ^0.2.0
+  velocity_x: ^3.3.0
+  http: ^0.13.5
+  cupertino_icons: ^1.0.2
+  get: ^4.6.5
+  shared_preferences: ^2.0.17
+
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
