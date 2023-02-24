@@ -29,65 +29,88 @@ class Home extends StatelessWidget {
             ],
           ),
         ),
-        child: SingleChildScrollView(
-          child: Opacity(
-            opacity: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Expanded(
+                    flex: 4,
+                    child: Text(
+                      "Online Compiler",
+                      style: TextStyle(fontSize: 26, color: Colors.white),
+                    ),
+                  ),
+                  Container(
+                    child: const LanguageDropdownButton(),
+                  ),
+                  Container(
+                    child: const SizedBox(
+                      width: 20,
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: IconButton(
+                      icon: const Icon(Icons.play_arrow),
+                      onPressed: () {
+                        navigateToAnotherScreen(context, Routes.authentication);
+                        // debugPrint(textController.value.text);
+                        // sendRequest(textController.value.text);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(
+              color: Colors.black,
+            ),
+            Expanded(
+              flex: 10,
+              child: SizedBox(
+                height: MediaQuery.sizeOf(context).height - 66,
+                child: Row(
                   children: [
-                    const Expanded(
-                      flex: 4,
-                      child: Padding(
-                        padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
-                        child: Text(
-                          "Online Compiler",
-                          style: TextStyle(fontSize: 26, color: Colors.white),
-                        ),
+                    Expanded(
+                      flex: 2,
+                      child: ListView(
+                        children: [
+                          SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: TextField(
+                                style: const TextStyle(color: Colors.white),
+                                decoration: const InputDecoration(
+                                    border: InputBorder.none),
+                                controller: textController,
+                                maxLines: null, //or null
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      child: LanguageDropdownButton(),
+                    const VerticalDivider(
+                      color: Colors.black,
                     ),
-                    Container(
-                      child: SizedBox(width: 20,),
-                    ),
-                    Container(
-                      padding: EdgeInsets.fromLTRB(0,0,10,0),
-                      child: IconButton(
-                        icon: const Icon(Icons.play_arrow),
-                        onPressed: () {
-                          // navigateToAnotherScreen(context, Routes.authentication);
-                          // debugPrint(textController.value.text);
-                          sendRequest(textController.value.text);
-                        },
+                    Expanded(
+                      flex: 1,
+                      child: Column(
+                        children: const [
+                          Expanded(flex: 1, child: Text("123")),
+                          Divider(color: Colors.black,),
+                          Expanded(flex: 1, child: Text("456")),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const Divider(
-                  color: Colors.black,
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minHeight: MediaQuery.sizeOf(context).height,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.white),
-                      decoration:
-                          const InputDecoration(border: InputBorder.none),
-                      controller: textController,
-                      maxLines: null, //or null
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
