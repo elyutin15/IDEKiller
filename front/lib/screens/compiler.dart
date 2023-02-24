@@ -31,8 +31,8 @@ class Home extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Expanded(
-              flex: 1,
+            SizedBox(
+              height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -66,48 +66,50 @@ class Home extends StatelessWidget {
               ),
             ),
             const Divider(
+              height: 0,
               color: Colors.black,
             ),
-            Expanded(
-              flex: 10,
-              child: SizedBox(
-                height: MediaQuery.sizeOf(context).height - 66,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: ListView(
-                        children: [
-                          SingleChildScrollView(
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: TextField(
-                                style: const TextStyle(color: Colors.white),
-                                decoration: const InputDecoration(
-                                    border: InputBorder.none),
-                                controller: textController,
-                                maxLines: null, //or null
-                              ),
+            SizedBox(
+              height: MediaQuery.sizeOf(context).height - 50,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: ListView(
+                      children: [
+                        SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                            child: TextField(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none),
+                              controller: textController,
+                              maxLines: null,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const VerticalDivider(
-                      color: Colors.black,
+                  ),
+                  const VerticalDivider(
+                    color: Colors.black,
+                    width: 0,
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Expanded(flex: 1, child: Text("123")),
+                        Divider(
+                          height: 0,
+                          color: Colors.black,
+                        ),
+                        Expanded(flex: 1, child: Text("456")),
+                      ],
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        children: const [
-                          Expanded(flex: 1, child: Text("123")),
-                          Divider(color: Colors.black,),
-                          Expanded(flex: 1, child: Text("456")),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],
