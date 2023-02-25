@@ -2,6 +2,7 @@ package mirea.idekiller.controller;
 
 import mirea.idekiller.Compiler;
 import mirea.idekiller.model.Code;
+import mirea.idekiller.model.CompilationRequest;
 import mirea.idekiller.model.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +30,9 @@ public class CompilerController {
     @CrossOrigin(origins = {"${frontend.url}"})
     @ResponseBody
     @PostMapping("/")
-    public Output compileCode(@RequestBody Code code) throws IOException {
+    public Output compileCode(@RequestBody CompilationRequest compilationRequest) throws IOException {
         log.info("Requested compilation");
-        Output out = compiler.compile(code);
+        Output out = compiler.compile(compilationRequest);
         log.info("Outputted code: {}", out.getOutput());
         return out;
     }
