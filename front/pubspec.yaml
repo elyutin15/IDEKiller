@@ -18,7 +18,10 @@ dependencies:
   get: ^4.6.5
   shared_preferences: ^2.0.17
   path_icon: ^0.7.2
-
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding
+      path: plugins/window_size
 
 
 dev_dependencies:
