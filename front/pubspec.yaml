@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   shared_preferences: ^2.0.17
+  path_icon: ^0.7.2
 
 
 
@@ -27,5 +28,4 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
-
   uses-material-design: true

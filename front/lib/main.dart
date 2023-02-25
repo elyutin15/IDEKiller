@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'screens/compiler.dart';
 import 'package:flutter/material.dart';
 import 'screens/auth/auth_screen.dart';
