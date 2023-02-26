@@ -20,7 +20,7 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
       child: DropdownButton<String>(
         value: dropdownValue,
         elevation: 16,
-        style: const TextStyle(color: Colors.black),
+        style: const TextStyle(color: Colors.white),
         onChanged: (String? value) {
           setState(() {
             GlobalValues.language = value!;
