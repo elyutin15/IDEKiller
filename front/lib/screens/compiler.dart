@@ -51,7 +51,7 @@ class Home extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
                     child: IconButton(
-                      icon: Flexible(child: PathIcon(iconData)),
+                      icon: const Flexible(child: Icon(Icons.account_box, color: Colors.white,)),
                       onPressed: () {
                         navigateToAnotherScreen(context, Routes.authentication);
                       },
@@ -118,6 +118,7 @@ class Home extends StatelessWidget {
                   ),
                   const VerticalDivider(
                     color: Color.fromARGB(255, 28, 40, 52),
+                    thickness: 3,
                     width: 0,
                   ),
                   Expanded(
@@ -135,13 +136,15 @@ class Home extends StatelessWidget {
                                 color: Colors.white,
                               ),
                               decoration: const InputDecoration(
-                                  border: InputBorder.none),
+                                border: InputBorder.none,
+                              ),
                               maxLines: null,
                             ),
                           ),
                         ),
                         const Divider(
                           height: 0,
+                          thickness: 3,
                           color: Color.fromARGB(255, 28, 40, 52),
                         ),
                         const Expanded(
