@@ -18,6 +18,8 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
+        iconSize: 0,
+        dropdownColor: Color.fromARGB(255, 28, 40, 52),
         value: dropdownValue,
         elevation: 16,
         style: const TextStyle(color: Colors.white),

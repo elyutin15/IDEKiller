@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/DropdownButton.dart';
 import 'package:idekiller/GlobalValues.dart';
+import 'package:idekiller/utils/TabIntent.dart';
 import 'package:idekiller/utils/routes.dart';
 import 'package:path_icon/path_icon.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -48,14 +50,14 @@ class Home extends StatelessWidget {
                       width: 20,
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: IconButton(
-                      icon: const Flexible(child: Icon(Icons.account_box, color: Colors.white,)),
-                      onPressed: () {
-                        navigateToAnotherScreen(context, Routes.authentication);
-                      },
+                  IconButton(
+                    icon: const Icon(
+                      Icons.account_box,
+                      color: Colors.white,
                     ),
+                    onPressed: () {
+                      navigateToAnotherScreen(context, Routes.authentication);
+                    },
                   ),
                 ],
               ),
@@ -79,19 +81,28 @@ class Home extends StatelessWidget {
                           child: Column(
                             children: [
                               Expanded(
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: TextField(
-                                    style: const TextStyle(
-                                      fontSize: 10,
-                                      color: Colors.white,
+                                child: Actions(
+                                  actions: {InsertTabIntent: InsertTabAction()},
+                                  child: Shortcuts(
+                                    shortcuts: {
+                                      LogicalKeySet(LogicalKeyboardKey.tab):
+                                          InsertTabIntent(4, codeController)
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
+                                      child: TextField(
+                                        style: const TextStyle(
+                                          fontSize: 10,
+                                          color: Colors.white,
+                                        ),
+                                        decoration: const InputDecoration(
+                                          border: InputBorder.none,
+                                        ),
+                                        controller: codeController,
+                                        maxLines: null,
+                                      ),
                                     ),
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                    ),
-                                    controller: codeController,
-                                    maxLines: null,
                                   ),
                                 ),
                               ),
@@ -127,18 +138,28 @@ class Home extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                            child: TextField(
-                              controller: inputController,
-                              style: const TextStyle(
-                                fontSize: 10,
-                                color: Colors.white,
+                          child: Actions(
+                            actions: {InsertTabIntent: InsertTabAction()},
+                            child: Shortcuts(
+                              shortcuts: {
+                                LogicalKeySet(
+                                  LogicalKeyboardKey.tab,
+                                ): InsertTabIntent(4, inputController)
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: TextField(
+                                  controller: inputController,
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: Colors.white,
+                                  ),
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
+                                  ),
+                                  maxLines: null,
+                                ),
                               ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                              ),
-                              maxLines: null,
                             ),
                           ),
                         ),
