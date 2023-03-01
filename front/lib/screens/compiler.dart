@@ -13,6 +13,7 @@ class Home extends StatelessWidget {
   Home({super.key});
 
   final TextEditingController inputController = TextEditingController();
+  final TextEditingController outputController = TextEditingController();
   final TextEditingController codeController = TextEditingController(
       text:
           "public class Main { public static void main (String[] args) { System.out.println(\"Hello, World\"); }}");
@@ -120,7 +121,7 @@ class Home extends StatelessWidget {
                             ),
                             onPressed: () {
                               sendRequest(codeController.value.text,
-                                  inputController.value.text);
+                                  inputController.value.text, outputController);
                             },
                           ),
                         ),
@@ -168,11 +169,13 @@ class Home extends StatelessWidget {
                           thickness: 3,
                           color: Color.fromARGB(255, 28, 40, 52),
                         ),
-                        const Expanded(
+                        Expanded(
                           flex: 1,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                             child: TextField(
+                              enabled: false,
+                              controller: outputController,
                               style: TextStyle(
                                 fontSize: 10,
                                 color: Colors.white,
@@ -195,9 +198,8 @@ class Home extends StatelessWidget {
     );
   }
 
-  Future<void> sendRequest(String code, String input) async {
+  Future<void> sendRequest(String code, String input, TextEditingController outputController) async {
     var url = 'http://localhost:8080';
-    var body = jsonEncode({'code': code});
     var response = await http
         .post(Uri.parse(url),
             headers: {
@@ -205,17 +207,16 @@ class Home extends StatelessWidget {
               "CompilationLanguage": GlobalValues.language
             },
             body: json.encode({
-              {
-                "code": {"code": code}
-              },
-              {
-                "input": {"words": input}
-              }
+              "code": {"code": code},
+              "input": {"words": input}
             }))
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.contentLength}");
       debugPrint(response.body);
+      var output = json.decode(response.body);
+      outputController.text = output["output"];
+
     });
   }
 
