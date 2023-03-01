@@ -10,14 +10,14 @@ import java.util.List;
 
 @Data
 public class Input {
-    List<String> words;
+    String words;
 
     @JsonIgnore
     ObjectMapper mapper;
 
     @JsonCreator
     public Input(
-            @JsonProperty("words") List<String> words
+            @JsonProperty("words") String words
     ) {
         this.words = words;
         mapper = new ObjectMapper();

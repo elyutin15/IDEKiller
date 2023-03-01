@@ -23,8 +23,8 @@ public class CompilerController {
     Logger log = LoggerFactory.getLogger(CompilerController.class);
 
 
-    CompilerController(Environment env) {
-        compiler = new Compiler(env);
+    CompilerController() {
+        compiler = new Compiler();
     }
 
     @CrossOrigin(origins = {"${frontend.url}"})

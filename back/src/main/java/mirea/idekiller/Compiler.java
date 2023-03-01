@@ -18,13 +18,13 @@ import java.util.List;
 public class Compiler {
     Logger log = LoggerFactory.getLogger(Compiler.class);
 
-    private final String utilsPath;
+    private final String utilsPath = "..//util";
+    private final String utilsMainJavaPath = "..//util//Main.java";
 
-    public Compiler(Environment env) {
-        utilsPath = env.getProperty("utils.path");
-        if (!Files.exists(Path.of(utilsPath + "//Main.java"))) {
+    public Compiler() {
+        if (!Files.exists(Path.of(utilsMainJavaPath))) {
             try {
-                Files.createFile(Path.of(utilsPath + "//Main.java"));
+                Files.createFile(Path.of(utilsMainJavaPath));
             } catch (IOException e) {
                 log.error("Error when create file for compilation" );
             }
@@ -44,10 +44,9 @@ public class Compiler {
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         BufferedWriter w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 
-        for (String word : compilationRequest.getInput().getWords()) {
-            w.write(word);
-        }
+        w.write(compilationRequest.getInput().getWords());
         w.close();
+
         String line;
         StringBuilder sb = new StringBuilder();
         while (true) {
@@ -60,7 +59,7 @@ public class Compiler {
 
     private void writeCode(Code code) {
         try {
-            Files.write(Path.of(utilsPath + "//Main.java"), List.of(code.getCode()), StandardCharsets.UTF_8);
+            Files.write(Path.of(utilsMainJavaPath), List.of(code.getCode()), StandardCharsets.UTF_8);
         } catch (IOException e) {
             log.error("Error when writing code on file");
         }
