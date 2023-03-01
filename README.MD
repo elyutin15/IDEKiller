@@ -17,7 +17,7 @@ json
     "code": "source code ... "
   },
   "input": {
-    "words": ["kek ..."]
+    "words": "kek ..."
   }
 }
 ```
