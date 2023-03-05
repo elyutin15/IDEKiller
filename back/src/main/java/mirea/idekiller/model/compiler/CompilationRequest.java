@@ -1,4 +1,4 @@
-package mirea.idekiller.model;
+package mirea.idekiller.model.compiler;
 
 
 import com.fasterxml.jackson.annotation.*;
@@ -7,17 +7,20 @@ import lombok.Data;
 import lombok.SneakyThrows;
 
 @Data
-public class Output {
-    String output;
+public class CompilationRequest {
+    Code code;
+    Input input;
 
     @JsonIgnore
     ObjectMapper mapper;
 
     @JsonCreator
-    public Output(
-            @JsonProperty("output") String code
+    public CompilationRequest(
+            @JsonProperty("code") Code code,
+            @JsonProperty("input") Input input
     ) {
-        this.output = code;
+        this.code = code;
+        this.input = input;
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
