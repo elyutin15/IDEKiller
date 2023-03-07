@@ -1,7 +1,3 @@
-Для запроса на бекенд используется cUrl (семпл выводящий hello, world)
-```
-curl -X POST -H 'Content-Type: application/json' -d "{\"code\": \"public class Main{public static void main(String[] args) {System.out.println(\\\"Hello World\\\");}}\"}" http://localhost:8080
-```
 Для запроса на бэкэнд с вводом
 
 Считывается одна строка, вводится "kek"
@@ -20,4 +16,20 @@ json
     "words": "some data ..."
   }
 }
+```
+
+
+Запрос на регистрацию и логин имеют одинаковую структуру
+```
+json
+{
+  "name": "...",
+  "email": "...",
+  "password": "..."
+}
+```
+
+```
+curl -X POST -H 'Content-Type: application/json' -d "{\"name\":\"abc\", \"email\":\"abc@mail.ru\", \"password\":\"12345\"}" http://localhost:8080/login
+curl -X POST -H 'Content-Type: application/json' -d "{\"name\":\"abc\", \"email\":\"abc@mail.ru\", \"password\":\"12345\"}" http://localhost:8080/registration
 ```
