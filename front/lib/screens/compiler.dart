@@ -15,6 +15,8 @@ class Home extends StatelessWidget {
 
   final TextEditingController inputController = TextEditingController();
   final TextEditingController outputController = TextEditingController();
+  final TextEditingController liningController =
+      TextEditingController(text: "1");
   final TextEditingController codeController = TextEditingController(
       text:
           "public class Main {\n   public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}");
@@ -113,21 +115,42 @@ class Home extends StatelessWidget {
                           ),
                         ),
                         Positioned(
-                          right: 10,
-                          child: IconButton(
-                            icon: const Flexible(
-                              child: Icon(
+                          top: 5,
+                          right: 20,
+                          child: SizedBox(
+                            height: 32,
+                            width: 76,
+                            child: TextButton.icon(
+                              style: ButtonStyle(
+                                iconSize: MaterialStateProperty.all(16),
+                                backgroundColor: MaterialStateProperty.all(
+                                    Colors.blue[500]),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                sendRequest(
+                                  codeController.value.text,
+                                  inputController.value.text,
+                                  outputController,
+                                );
+                              },
+                              icon: const Icon(
                                 Icons.play_arrow,
-                                color: Colors.white,
+                                color: Colors.black,
+                              ),
+                              label: const Text(
+                                "Run",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.black,
+                                ),
                               ),
                             ),
-                            onPressed: () {
-                              sendRequest(
-                                codeController.value.text,
-                                inputController.value.text,
-                                outputController,
-                              );
-                            },
                           ),
                         ),
                       ],
