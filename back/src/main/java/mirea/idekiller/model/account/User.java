@@ -11,12 +11,12 @@ public class User {
     String name;
     String email;
 
-    @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
+    @JsonIgnore
     private char[] password;
 
     @JsonIgnore
-    private Integer hashedPassword;
+    private String hashedPassword;
     @JsonIgnore
     ObjectMapper mapper;
 
@@ -29,16 +29,9 @@ public class User {
         this.name = name;
         this.email = email;
         this.password = password;
+        hashedPassword = Hasher.hash(password);
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-
-
-
-
-    }
-
-    public String getHashedPassword() {
-        return Hasher.hash(password);
     }
 
     @SneakyThrows
