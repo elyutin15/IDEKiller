@@ -1,3 +1,4 @@
 class GlobalValues {
-  static String language = "C++";
+  static String language = 'C++';
+  static double font = 14;
 }

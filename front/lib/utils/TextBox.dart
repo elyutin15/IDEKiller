@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:idekiller/GlobalValues.dart';
 
 class TextBox extends StatelessWidget {
-  const TextBox(
-      {Key? key, required this.textEditingController, this.enable = true})
+  TextBox({Key? key, required this.textEditingController, this.enable = true})
       : super(key: key);
 
   final bool enable;
   final TextEditingController textEditingController;
 
+  var style = TextStyle(
+    fontSize: GlobalValues.font,
+    color: Colors.white,
+  );
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: TextField(
-        readOnly: !enable,
-        style: const TextStyle(
-          fontSize: 10,
-          color: Colors.white,
-        ),
-        decoration: const InputDecoration(
-          border: InputBorder.none,
-        ),
-        controller: textEditingController,
-        maxLines: null,
+    return TextField(
+      readOnly: !enable,
+      style: TextStyle(
+        fontSize: GlobalValues.font,
+        color: Colors.white,
       ),
+      decoration: const InputDecoration(
+        border: InputBorder.none,
+      ),
+      controller: textEditingController,
+      maxLines: null,
     );
   }
 }
