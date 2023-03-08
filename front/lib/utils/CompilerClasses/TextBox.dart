@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/GlobalValues.dart';
+import 'package:idekiller/utils/GlobalValues.dart';
 
 class TextBox extends StatelessWidget {
   TextBox({Key? key, required this.textEditingController, this.enable = true})
