@@ -5,6 +5,8 @@ import mirea.idekiller.model.compiler.CompilationRequest;
 import mirea.idekiller.model.compiler.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -17,10 +19,11 @@ import java.util.List;
 public class Compiler {
     Logger log = LoggerFactory.getLogger(Compiler.class);
 
-    private final String utilsPath = "..//util";
-    private final String utilsMainJavaPath = "..//util//Main.java";
+    private final String utilsMainJavaPath;
 
-    public Compiler() {
+    @Autowired
+    public Compiler(@Value("${util.path}") String utilsMainJavaPath) {
+        this.utilsMainJavaPath = utilsMainJavaPath;
         if (!Files.exists(Path.of(utilsMainJavaPath))) {
             try {
                 Files.createFile(Path.of(utilsMainJavaPath));
@@ -33,6 +36,7 @@ public class Compiler {
     public Output compile(CompilationRequest compilationRequest) throws IOException {
         writeCode(compilationRequest.getCode());
 
+        String utilsPath = "..//util";
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe",
                 "/c",
@@ -52,6 +56,7 @@ public class Compiler {
             line = r.readLine();
             if (line == null) { break; }
             sb.append(line);
+            sb.append("\n");
         }
         return new Output(sb.toString());
     }
