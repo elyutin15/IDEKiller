@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/GlobalValues.dart';
+import 'package:idekiller/utils/GlobalValues.dart';
 
-const List<String> list = <String>['C++', 'C', 'Java', 'Python'];
+const List<String> languages = <String>['C++', 'C', 'Java', 'Python'];
+const List<double> fonts = <double>[10, 12, 14, 16, 18, 20];
 
-// ignore: must_be_immutable
 class LanguageDropdownButton extends StatefulWidget {
   const LanguageDropdownButton({super.key});
 
@@ -12,14 +12,14 @@ class LanguageDropdownButton extends StatefulWidget {
 }
 
 class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
-  String dropdownValue = list.first;
+  String dropdownValue = languages.first;
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         iconSize: 0,
-        dropdownColor: Color.fromARGB(255, 28, 40, 52),
+        dropdownColor: const Color.fromARGB(255, 28, 40, 52),
         value: dropdownValue,
         elevation: 16,
         style: const TextStyle(color: Colors.white),
@@ -29,7 +29,7 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
             dropdownValue = value;
           });
         },
-        items: list.map<DropdownMenuItem<String>>((String value) {
+        items: languages.map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
