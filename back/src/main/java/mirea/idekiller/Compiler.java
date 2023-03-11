@@ -5,6 +5,7 @@ import mirea.idekiller.model.compiler.CompilationRequest;
 import mirea.idekiller.model.compiler.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,9 +19,19 @@ import java.util.List;
 public class Compiler {
     Logger log = LoggerFactory.getLogger(Compiler.class);
 
-    @Value("${util.path}")
-    private String utilPath;
+    private final String utilPath;
 
+    @Autowired
+    public Compiler(@Value("${util.path}") String utilPath) {
+        this.utilPath = utilPath;
+        if (!Files.exists(Path.of(utilPath))) {
+            try {
+                Files.createDirectory(Path.of(utilPath));
+            } catch (IOException e) {
+                log.error("Error while creating directory util");
+            }
+        }
+    }
     public Output compile(CompilationRequest compilationRequest) throws IOException {
         String path = writeCode(compilationRequest.getCode());
 
