@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
 import 'package:idekiller/utils/CompilerClasses/RunText.dart';
 import 'package:idekiller/utils/CompilerClasses/TextEnvironment.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 import 'package:idekiller/utils/CompilerClasses/TextBox.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class MainScrollablePage extends StatefulWidget {
-  MainScrollablePage({Key? key}) : super(key: key);
+  const MainScrollablePage({Key? key}) : super(key: key);
 
   @override
   State<MainScrollablePage> createState() => _MainScrollablePageState();
 }
 
-class _MainScrollablePageState extends State<MainScrollablePage>
-    with TickerProviderStateMixin {
+class _MainScrollablePageState extends State<MainScrollablePage> {
   final inputController = TextEditingController();
   final outputController = TextEditingController();
   final codeController = TextEditingController(
@@ -28,14 +27,6 @@ class _MainScrollablePageState extends State<MainScrollablePage>
 
   @override
   Widget build(BuildContext context) {
-    Widget loadingIndicator = _load
-        ? SizedBox(
-            child: LoadingAnimationWidget.threeArchedCircle(
-              size: 30,
-              color: const Color(0xFFEA3799),
-            ),
-          )
-        : Container();
     return Container(
       color: const Color.fromARGB(255, 14, 22, 31),
       child: Row(
@@ -119,7 +110,9 @@ class _MainScrollablePageState extends State<MainScrollablePage>
                       const SizedBox(
                         width: 20,
                       ),
-                      loadingIndicator,
+                      LoadingAnimation(
+                        load: _load,
+                      ),
                     ],
                   ),
                 ),
