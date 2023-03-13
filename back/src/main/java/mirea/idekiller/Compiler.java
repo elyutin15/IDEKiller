@@ -5,6 +5,8 @@ import mirea.idekiller.model.compiler.CompilationRequest;
 import mirea.idekiller.model.compiler.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -17,26 +19,26 @@ import java.util.List;
 public class Compiler {
     Logger log = LoggerFactory.getLogger(Compiler.class);
 
-    private final String utilsPath = "..//util";
-    private final String utilsMainJavaPath = "..//util//Main.java";
+    private final String utilPath;
 
-    public Compiler() {
-        if (!Files.exists(Path.of(utilsMainJavaPath))) {
+    @Autowired
+    public Compiler(@Value("${util.path}") String utilPath) {
+        this.utilPath = utilPath;
+        if (!Files.exists(Path.of(utilPath))) {
             try {
-                Files.createFile(Path.of(utilsMainJavaPath));
+                Files.createDirectory(Path.of(utilPath));
             } catch (IOException e) {
-                log.error("Error when create file for compilation" );
+                log.error("Error while creating directory util");
             }
         }
     }
-
     public Output compile(CompilationRequest compilationRequest) throws IOException {
-        writeCode(compilationRequest.getCode());
+        String path = writeCode(compilationRequest.getCode());
 
         ProcessBuilder builder = new ProcessBuilder(
                 "cmd.exe",
                 "/c",
-                "cd " + utilsPath + " && javac Main.java && java Main"
+                "cd " + utilPath + "//" + path + " && javac Main.java && java Main"
         );
         builder.redirectErrorStream(true);
         Process p = builder.start();
@@ -52,15 +54,45 @@ public class Compiler {
             line = r.readLine();
             if (line == null) { break; }
             sb.append(line);
+            sb.append("\n");
         }
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
+        r.close();
+        eraseCode(path);
         return new Output(sb.toString());
     }
 
-    private void writeCode(Code code) {
+    private String writeCode(Code code) {
+        String format = utilPath + "//%d";
+        int num = 0;
+        while (Files.exists(Path.of(String.format(format, num)))) {
+            num++;
+        }
         try {
-            Files.write(Path.of(utilsMainJavaPath), List.of(code.getCode()), StandardCharsets.UTF_8);
+            String path = String.format(format, num);
+            Files.createDirectory(Path.of(path));
+            Files.createFile(Path.of(path+"//Main.java"));
+            Files.write(Path.of(path+"//Main.java"), List.of(code.getCode()), StandardCharsets.UTF_8);
+            return Integer.toString(num);
         } catch (IOException e) {
-            log.error("Error when writing code on file");
+            log.error("Error while creating directory and file for thread");
+        }
+        return null;
+    }
+
+    private void eraseCode(String path) {
+        try {
+            if (path == null) {
+                return;
+            }
+            path = utilPath + "//" + path;
+            Files.deleteIfExists(Path.of(path + "//Main.java"));
+            Files.deleteIfExists(Path.of(path + "//Main.class"));
+            Files.deleteIfExists(Path.of(path));
+        } catch (IOException e) {
+            log.error("Error while deleting code file");
         }
     }
 }
