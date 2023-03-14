@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:idekiller/screens/userProfile.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter/material.dart';
 import 'screens/compiler.dart';
@@ -28,6 +29,7 @@ void main() {
     routerDelegate: VxNavigator(routes: {
       Routes.homeRoute: (_, __) => MaterialPage(child: Home()),
       Routes.authentication: (_, __) => MaterialPage(child: AuthScreen()),
+      //Routes.profile: (_, __) => MaterialPage(child: ProfilePage()),
     }),
   ));
 }
