@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:js';
 
+import 'package:idekiller/utils/CompilerClasses/Buttons.dart';
+import 'package:idekiller/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/screens/compiler.dart';
@@ -11,6 +14,33 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> loginRequest() async {
+    var url = 'http://localhost:8080/login';
+    await http
+        .post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          "email": emailController.text,
+          "password": passwordController.text
+        }))
+        .then((http.Response response) {
+      debugPrint("Response status: ${response.statusCode}");
+      debugPrint("Response body: ${response.contentLength}");
+      var out = response.body;
+      debugPrint(out);
+      if(out == "success"){
+        debugPrint(out);
+        RegistrationPage().navigateToAnotherScreen(context as BuildContext, Routes.authentication);
+        //Uri.parse(Routes.authentication);
+        // navigateToAnotherScreen(
+        //     context,
+        //     Routes.authentication,);
+      }
+    });
+  }
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};

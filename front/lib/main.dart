@@ -29,6 +29,7 @@ void main() {
     routerDelegate: VxNavigator(routes: {
       Routes.homeRoute: (_, __) => MaterialPage(child: Home()),
       Routes.authentication: (_, __) => MaterialPage(child: AuthScreen()),
+      Routes.profile: (_, __) => MaterialPage(child: ProfilePage()),
       //Routes.profile: (_, __) => MaterialPage(child: ProfilePage()),
     }),
   ));

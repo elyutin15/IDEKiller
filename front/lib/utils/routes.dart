@@ -11,4 +11,5 @@ class AuthEndPoints {
 class Routes {
   static String homeRoute = '/';
   static String authentication = '/authentication';
+  static String profile = '/profile';
 }

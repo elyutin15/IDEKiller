@@ -96,7 +96,7 @@ class _AuthScreenState extends State<AuthScreen> {
           height: 20,
         ),
         SubmitButton(
-          onPressed: () => registrationController.registerWithEmail(),
+          onPressed: () => registrationController.registerRequest(),
           title: 'Register',
         )
       ],
@@ -118,7 +118,7 @@ class _AuthScreenState extends State<AuthScreen> {
           height: 20,
         ),
         SubmitButton(
-          onPressed: () => loginController.loginWithEmail(),
+          onPressed: () => loginController.loginRequest(),
           title: 'Login',
         )
       ],

@@ -14,6 +14,25 @@ class RegistrationController extends GetxController {
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
+  Future<void> registerRequest() async {
+    var url = 'http://localhost:8080/registration';
+    await http
+        .post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          "name": nameController.text,
+          "email": emailController.text,
+          "password": passwordController.text
+        }))
+        .then((http.Response response) {
+      debugPrint("Response status: ${response.statusCode}");
+      debugPrint("Response body: ${response.contentLength}");
+      debugPrint(response.body);
+    });
+  }
+
   Future<void> registerWithEmail() async {
     try {
       var headers = {'Content-Type': 'application/json'};
