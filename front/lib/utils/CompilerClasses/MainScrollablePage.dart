@@ -7,6 +7,7 @@ import 'package:idekiller/utils/CompilerClasses/TextEnvironment.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 import 'package:idekiller/utils/CompilerClasses/TextBox.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
+import 'package:process_run/shell.dart';
 
 class MainScrollablePage extends StatefulWidget {
   const MainScrollablePage({Key? key}) : super(key: key);
@@ -22,7 +23,6 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
       text:
           "public class Main {\n   public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}");
   late var isButtonDisabled = false;
-
   bool _load = false;
 
   @override
@@ -39,8 +39,11 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                   child: Column(
                     children: [
                       Expanded(
-                        child: TextEnvironment(
-                          textEditingController: codeController,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: TextEnvironment(
+                            textEditingController: codeController,
+                          ),
                         ),
                       ),
                     ],

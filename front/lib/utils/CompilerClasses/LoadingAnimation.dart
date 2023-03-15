@@ -10,9 +10,9 @@ class LoadingAnimation extends StatelessWidget {
   Widget build(BuildContext context) {
     return load
         ? SizedBox(
-            child: LoadingAnimationWidget.threeArchedCircle(
+            child: LoadingAnimationWidget.staggeredDotsWave(
               size: 30,
-              color: const Color(0xFFEA3799),
+              color: const Color(0xFF37EAC9),
             ),
           )
         : Container();
