@@ -1,8 +1,8 @@
-package mirea.idekiller;
+package mirea.idekiller.compiler;
 
-import mirea.idekiller.model.compiler.Code;
-import mirea.idekiller.model.compiler.CompilationRequest;
-import mirea.idekiller.model.compiler.Output;
+import mirea.idekiller.compiler.model.Code;
+import mirea.idekiller.compiler.model.CompilationRequest;
+import mirea.idekiller.compiler.model.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,28 +44,81 @@ public class Compiler {
         );
         builder.redirectErrorStream(true);
         Process p = builder.start();
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        BufferedWriter w = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
 
-        w.write(compilationRequest.getInput().getWords());
-        w.close();
 
-        String line;
+
+        ServerSocket ss = new ServerSocket(10123);
+        Socket client = ss.accept();
+
+        client.setKeepAlive(true);
+
+        BufferedReader pr = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        BufferedReader cr = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        BufferedWriter pw = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+
+
         StringBuilder sb = new StringBuilder();
         while (true) {
-            line = r.readLine();
-            if (line == null) { break; }
-            sb.append(line);
-            sb.append("\n");
+            try {
+                p.exitValue();
+                break;
+            } catch (IllegalThreadStateException ignored) {}
+
+            if (cr.ready()) {
+                var a1 = cr.read();
+                if (a1 > 0) {
+                    pw.write((char) a1);
+                    pw.flush();
+                }
+                continue;
+            }
+            if (pr.ready()) {
+                var a2 = pr.read();
+                if (a2 <= 0) {
+                    break;
+                }
+                sb.append((char) a2);
+            }
+
         }
         if (sb.length() > 0) {
             sb.deleteCharAt(sb.length() - 1);
         }
-        r.close();
+        //process p is died
+
+        if (cr != null)
+            cr.close();
+        if (client != null) {
+            client.close();
+        }
+        if (ss != null) {
+            ss.close();
+        }
         eraseCode(path);
         return new Output(sb.toString());
     }
 
+    private List<String> readStream(InputStream stream) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+        return reader.lines().toList();
+    }
+
+    private void writeStream(OutputStream stream, List<String> strings) {
+        if (strings == null) {
+            return;
+        }
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
+        for (String i : strings) {
+            try {
+                writer.write(i);
+                writer.newLine();
+                writer.flush();
+            } catch (IOException e) {
+                log.error("Error while writing string into stream");
+            }
+        }
+    }
     private String writeCode(Code code) {
         String format = utilPath + "//%d";
         int num = 0;

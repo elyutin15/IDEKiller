@@ -1,12 +1,15 @@
-package mirea.idekiller.controller;
+package mirea.idekiller.auth.controller;
 
-import mirea.idekiller.Hasher;
-import mirea.idekiller.data.JdbcUserRepository;
-import mirea.idekiller.model.account.User;
+import mirea.idekiller.auth.Hasher;
+import mirea.idekiller.auth.data.JdbcUserRepository;
+import mirea.idekiller.auth.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AccountController {

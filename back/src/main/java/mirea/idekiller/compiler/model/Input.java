@@ -1,12 +1,10 @@
-package mirea.idekiller.model.compiler;
+package mirea.idekiller.compiler.model;
 
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.SneakyThrows;
-
-import java.util.List;
 
 @Data
 public class Input {

@@ -1,10 +1,13 @@
-package mirea.idekiller.model.account;
+package mirea.idekiller.auth.model;
 
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.*;
-import mirea.idekiller.Hasher;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.Setter;
+import lombok.SneakyThrows;
+import mirea.idekiller.auth.Hasher;
 
 @Data
 public class User {

@@ -1,4 +1,4 @@
-package mirea.idekiller.model.compiler;
+package mirea.idekiller.compiler.model;
 
 
 import com.fasterxml.jackson.annotation.*;
