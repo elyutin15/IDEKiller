@@ -51,16 +51,18 @@ public class Compiler {
         Socket client = ss.accept();
 
         client.setKeepAlive(true);
-
         BufferedReader pr = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        BufferedReader cr = new BufferedReader(new InputStreamReader(client.getInputStream()));
         BufferedWriter pw = new BufferedWriter(new OutputStreamWriter(p.getOutputStream()));
+        BufferedReader cr = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        BufferedWriter cw = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
 
 
         StringBuilder sb = new StringBuilder();
         while (true) {
             try {
                 p.exitValue();
+                cw.write("e");
+                cw.flush();
                 break;
             } catch (IllegalThreadStateException ignored) {}
 
@@ -86,39 +88,14 @@ public class Compiler {
         }
         //process p is died
 
-        if (cr != null)
-            cr.close();
-        if (client != null) {
-            client.close();
-        }
-        if (ss != null) {
-            ss.close();
-        }
+        cr.close();
+        client.close();
+        ss.close();
+
         eraseCode(path);
         return new Output(sb.toString());
     }
 
-    private List<String> readStream(InputStream stream) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-
-        return reader.lines().toList();
-    }
-
-    private void writeStream(OutputStream stream, List<String> strings) {
-        if (strings == null) {
-            return;
-        }
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stream));
-        for (String i : strings) {
-            try {
-                writer.write(i);
-                writer.newLine();
-                writer.flush();
-            } catch (IOException e) {
-                log.error("Error while writing string into stream");
-            }
-        }
-    }
     private String writeCode(Code code) {
         String format = utilPath + "//%d";
         int num = 0;
