@@ -23,6 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 28, 40, 52),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(36),
@@ -37,10 +38,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     Container(
                       child: Text(
-                        'WELCOME',
+                        'IDEkiller',
                         style: TextStyle(
                             fontSize: 30,
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.w400),
                       ),
                     ),
@@ -51,14 +52,14 @@ class _AuthScreenState extends State<AuthScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         MaterialButton(
-                          color: !isLogin.value ? Colors.white : Colors.amber,
+                          color: !isLogin.value ? Colors.blueAccent : Colors.white54,
                           onPressed: () {
                             isLogin.value = false;
                           },
                           child: Text('Register'),
                         ),
                         MaterialButton(
-                          color: isLogin.value ? Colors.white : Colors.amber,
+                          color: isLogin.value ? Colors.blueAccent : Colors.white54,
                           onPressed: () {
                             isLogin.value = true;
                           },
