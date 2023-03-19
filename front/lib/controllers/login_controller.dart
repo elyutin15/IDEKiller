@@ -33,11 +33,7 @@ class LoginController extends GetxController {
       debugPrint(out);
       if(out == "success"){
         debugPrint(out);
-        RegistrationPage().navigateToAnotherScreen(context as BuildContext, Routes.authentication);
-        //Uri.parse(Routes.authentication);
-        // navigateToAnotherScreen(
-        //     context,
-        //     Routes.authentication,);
+        const RegistrationPage().navigateToAnotherScreen(context as BuildContext, Routes.authentication);
       }
     });
   }
@@ -63,7 +59,7 @@ class LoginController extends GetxController {
 
           emailController.clear();
           passwordController.clear();
-          Get.off(Home());
+          Get.off(const Home());
         } else if (json['code'] == 1) {
           throw jsonDecode(response.body)['message'];
         }
@@ -76,8 +72,8 @@ class LoginController extends GetxController {
           context: Get.context!,
           builder: (context) {
             return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: EdgeInsets.all(20),
+              title: const Text('Error'),
+              contentPadding: const EdgeInsets.all(20),
               children: [Text(error.toString())],
             );
           });

@@ -13,7 +13,6 @@ dependencies:
     sdk: flutter
   process_run: any
   url_strategy: ^0.2.0
-  velocity_x: ^3.3.0
   http: ^0.13.5
   cupertino_icons: ^1.0.2
   get: ^4.6.5

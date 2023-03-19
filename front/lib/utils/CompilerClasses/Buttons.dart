@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:idekiller/utils/routes.dart';
-import 'package:velocity_x/velocity_x.dart';
 
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage({Key? key}) : super(key: key);
@@ -24,8 +25,8 @@ class RegistrationPage extends StatelessWidget {
     );
   }
 
-  void navigateToAnotherScreen(BuildContext context, String page) async {
-    await context.vxNav.push(Uri.parse(page));
+  void navigateToAnotherScreen(BuildContext context, String page)  {
+    Get.rootDelegate.toNamed(Routes.authentication);
   }
 }
 
