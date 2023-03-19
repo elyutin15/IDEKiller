@@ -34,7 +34,7 @@ public class Compiler {
             }
         }
     }
-    public Output compile(CompilationRequest compilationRequest) throws IOException {
+    public Output compile(CompilationRequest compilationRequest, ServerSocket serverSocket) throws IOException {
         String path = writeCode(compilationRequest.getCode());
 
         ProcessBuilder builder = new ProcessBuilder(
@@ -45,10 +45,7 @@ public class Compiler {
         builder.redirectErrorStream(true);
         Process p = builder.start();
 
-
-
-        ServerSocket ss = new ServerSocket(10123);
-        Socket client = ss.accept();
+        Socket client = serverSocket.accept();
 
         client.setKeepAlive(true);
         BufferedReader pr = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -90,7 +87,6 @@ public class Compiler {
 
         cr.close();
         client.close();
-        ss.close();
 
         eraseCode(path);
         return new Output(sb.toString());
