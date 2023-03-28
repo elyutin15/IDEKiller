@@ -60,6 +60,13 @@ public class Compiler {
                 p.exitValue();
                 cw.write("e");
                 cw.flush();
+                while (pr.ready()) {
+                    var a2 = pr.read();
+                    if (a2 <= 0) {
+                        break;
+                    }
+                    sb.append((char)a2);
+                }
                 break;
             } catch (IllegalThreadStateException ignored) {}
 
