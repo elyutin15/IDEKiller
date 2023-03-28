@@ -17,7 +17,6 @@ class RegistrationPage extends StatelessWidget {
         ),
         onPressed: () {
           navigateToAnotherScreen(
-            context,
             Routes.authentication,
           );
         },
@@ -25,8 +24,8 @@ class RegistrationPage extends StatelessWidget {
     );
   }
 
-  void navigateToAnotherScreen(BuildContext context, String page)  {
-    Get.rootDelegate.toNamed(Routes.authentication);
+  void navigateToAnotherScreen(String page)  {
+    Get.rootDelegate.toNamed(page);
   }
 }
 

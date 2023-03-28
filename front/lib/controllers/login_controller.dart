@@ -33,7 +33,7 @@ class LoginController extends GetxController {
       debugPrint(out);
       if(out == "success"){
         debugPrint(out);
-        const RegistrationPage().navigateToAnotherScreen(context as BuildContext, Routes.authentication);
+        const RegistrationPage().navigateToAnotherScreen(Routes.authentication);
       }
     });
   }
