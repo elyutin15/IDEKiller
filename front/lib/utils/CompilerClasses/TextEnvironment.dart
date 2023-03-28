@@ -6,13 +6,16 @@ import 'package:idekiller/utils/CompilerClasses/TextBoxActions.dart';
 class TextEnvironment extends StatelessWidget {
   TextEditingController textEditingController;
 
-  TextEnvironment({Key? key, required this.textEditingController})
+  bool reversible;
+
+  TextEnvironment({Key? key, required this.textEditingController, required this.reversible})
       : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
     return Actions(
-      actions: {InsertTabIntent: InsertTabAction(), InsertEnterIntent: InsertEnterAction()},
+      actions: {InsertTabIntent: InsertTabAction(), InsertEnterIntent: InsertEnterAction(), InsertBraceIntent: InsertBraceAction()},
       child: Shortcuts(
         shortcuts: {
           LogicalKeySet(
@@ -26,10 +29,16 @@ class TextEnvironment extends StatelessWidget {
           ): InsertEnterIntent(
             4,
             textEditingController
+          ),
+          LogicalKeySet(
+            LogicalKeyboardKey.bracketLeft
+          ): InsertBraceIntent(
+            textEditingController
           )
         },
         child: TextBox(
           textEditingController: textEditingController,
+          reversible: reversible,
         ),
       ),
     );

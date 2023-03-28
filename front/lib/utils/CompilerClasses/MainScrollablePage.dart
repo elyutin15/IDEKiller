@@ -21,7 +21,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   final outputController = TextEditingController();
   final codeController = TextEditingController(
       text:
-          "public class Main {\n   public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}");
+          "public class Main {\n    public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}");
   late var isButtonDisabled = false;
   bool _load = false;
 
@@ -43,6 +43,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                           padding: const EdgeInsets.only(left: 10),
                           child: TextEnvironment(
                             textEditingController: codeController,
+                            reversible: true,
                           ),
                         ),
                       ),
@@ -97,6 +98,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                     padding: const EdgeInsets.only(left: 20),
                     child: TextEnvironment(
                       textEditingController: inputController,
+                      reversible: false,
                     ),
                   ),
                 ),

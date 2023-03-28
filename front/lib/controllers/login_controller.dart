@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:js';
 
+import 'package:idekiller/utils/CompilerClasses/Buttons.dart';
+import 'package:idekiller/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/screens/compiler.dart';
@@ -11,6 +14,29 @@ class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  Future<void> loginRequest() async {
+    var url = 'http://localhost:8080/login';
+    await http
+        .post(Uri.parse(url),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: json.encode({
+          "email": emailController.text,
+          "password": passwordController.text
+        }))
+        .then((http.Response response) {
+      debugPrint("Response status: ${response.statusCode}");
+      debugPrint("Response body: ${response.contentLength}");
+      var out = response.body;
+      debugPrint(out);
+      if(out == "success"){
+        debugPrint(out);
+        const RegistrationPage().navigateToAnotherScreen(Routes.authentication);
+      }
+    });
+  }
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};
@@ -33,7 +59,7 @@ class LoginController extends GetxController {
 
           emailController.clear();
           passwordController.clear();
-          Get.off(Home());
+          Get.off(const Home());
         } else if (json['code'] == 1) {
           throw jsonDecode(response.body)['message'];
         }
@@ -46,8 +72,8 @@ class LoginController extends GetxController {
           context: Get.context!,
           builder: (context) {
             return SimpleDialog(
-              title: Text('Error'),
-              contentPadding: EdgeInsets.all(20),
+              title: const Text('Error'),
+              contentPadding: const EdgeInsets.all(20),
               children: [Text(error.toString())],
             );
           });

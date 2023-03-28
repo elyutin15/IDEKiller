@@ -46,6 +46,8 @@ class InsertEnterAction extends Action {
   @override
   Object invoke(covariant Intent intent) {
     if (intent is InsertEnterIntent) {
+      debugPrint('enter');
+
       final oldValue = intent.textController.value;
 
       final newComposing = TextRange.collapsed(oldValue.composing.start);
@@ -60,11 +62,16 @@ class InsertEnterAction extends Action {
         if (newText.toString()[i] == '}') cnt--;
       }
 
+      if (oldValue.text.length > newText.length) {
+        if (oldValue.text[newText.length] == '}') {
+          cnt--;
+        }
+      }
+
       final newSelection = TextSelection.collapsed(
           offset: oldValue.selection.start +
               (cnt == 0 ? 1 : cnt * intent.numSpaces + 1));
 
-      debugPrint(newText.toString());
       newText.write('\n');
       for (var i = 0; i < cnt * intent.numSpaces; i++) {
         newText.write(' ');
@@ -82,3 +89,41 @@ class InsertEnterAction extends Action {
   }
 }
 
+
+
+class InsertBraceIntent extends Intent {
+  const InsertBraceIntent(this.textController);
+  final TextEditingController textController;
+}
+
+class InsertBraceAction extends Action {
+  @override
+  Object invoke(covariant Intent intent) {
+    if (intent is InsertBraceIntent) {
+      debugPrint('space');
+      final oldValue = intent.textController.value;
+      final newComposing = TextRange.collapsed(oldValue.composing.start);
+
+      final newText = StringBuffer(oldValue.selection.isValid
+          ? oldValue.selection.textBefore(oldValue.text)
+          : oldValue.text);
+
+
+      final newSelection = TextSelection.collapsed(
+          offset: oldValue.selection.start+1);
+
+
+      newText.write('{');
+      newText.write('}');
+      newText.write(oldValue.selection.isValid
+          ? oldValue.selection.textAfter(oldValue.text)
+          : '');
+      intent.textController.value = intent.textController.value.copyWith(
+        composing: newComposing,
+        text: newText.toString(),
+        selection: newSelection,
+      );
+    }
+    return '';
+  }
+}
