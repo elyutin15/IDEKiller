@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
@@ -20,13 +21,19 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   final inputController = TextEditingController();
   final outputController = TextEditingController();
   final codeController = TextEditingController(
-      text:
-          "public class Main {\n    public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}");
+        text:
+        GlobalValues.code);
+
   late var isButtonDisabled = false;
   bool _load = false;
 
+  void func() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    codeController.text = GlobalValues.code;
     return Container(
       color: const Color.fromARGB(255, 14, 22, 31),
       child: Row(
