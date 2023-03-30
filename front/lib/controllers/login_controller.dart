@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:idekiller/utils/CompilerClasses/Buttons.dart';
 import 'package:idekiller/utils/routes.dart';
