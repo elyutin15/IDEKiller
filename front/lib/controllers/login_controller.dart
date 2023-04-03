@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:idekiller/utils/CompilerClasses/Buttons.dart';
 import 'package:idekiller/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -32,7 +31,7 @@ class LoginController extends GetxController {
       debugPrint(out);
       if(out == "success"){
         debugPrint(out);
-        const RegistrationPage().navigateToAnotherScreen(Routes.authentication);
+        Get.rootDelegate.toNamed(Routes.profile);
       }
     });
   }
