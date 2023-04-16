@@ -7,4 +7,4 @@ gradle auth:bootRun
 gradle compiler:bootRun
 ```
 
-OpenApi - <server>:<port>/swagger-ui.html
+OpenApi - localhost:port/swagger-ui.html
