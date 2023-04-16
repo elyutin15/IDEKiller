@@ -34,18 +34,18 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
                     "\n"
                     "using namespace std;\n"
                     "int main(void) {\n"
-                        "   cout << \"Hello world\" <<end;\n"
+                    "  cout << \"Hello world\" <<end;\n"
                     "}\n";
                 break;
               case "Java":
-                GlobalValues.code ="public class Main {\n    public static void main (String[] args) {\n        System.out.println(\"Hello, World\");\n    }\n}";
+                GlobalValues.code ="public class Main {\n  public static void main (String[] args) {\n    System.out.println(\"Hello, World\");\n  }\n}";
                 break;
               case "C":
                 GlobalValues.code =
                     "#include <stdio.h>\n"
                     "\n"
                     "int main(void) {\n"
-                    "   printf(\"Hello world\");\n"
+                    "  printf(\"Hello world\");\n"
                     "}\n";
                 break;
               case "Python":
