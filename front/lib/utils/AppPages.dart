@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:idekiller/screens/auth/auth_screen.dart';
 import 'package:idekiller/screens/compiler.dart';
+import 'package:idekiller/screens/userProfile.dart';
 import 'package:idekiller/utils/routes.dart';
 
 abstract class AppPages {
@@ -12,6 +13,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.authentication,
       page: () => AuthScreen(),
+    ),
+    GetPage(
+      name: Routes.profile,
+      page: () => ProfilePage(),
     ),
   ];
 }

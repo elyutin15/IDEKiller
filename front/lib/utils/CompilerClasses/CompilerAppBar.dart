@@ -21,7 +21,9 @@ class CompilerAppBar extends StatelessWidget {
           const SizedBox(
             width: 40,
           ),
-          const LanguageDropdownButton(),
+          LanguageDropdownButton(
+            update: update,
+          ),
           const SizedBox(
             width: 20,
           ),
