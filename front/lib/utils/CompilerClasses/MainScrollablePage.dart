@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
+import 'package:code_text_field/code_text_field.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
@@ -8,7 +8,6 @@ import 'package:idekiller/utils/CompilerClasses/TextEnvironment.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 import 'package:idekiller/utils/CompilerClasses/TextBox.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
-import 'package:process_run/shell.dart';
 
 class MainScrollablePage extends StatefulWidget {
   const MainScrollablePage({Key? key}) : super(key: key);
@@ -20,9 +19,17 @@ class MainScrollablePage extends StatefulWidget {
 class _MainScrollablePageState extends State<MainScrollablePage> {
   final inputController = TextEditingController();
   final outputController = TextEditingController();
-  final codeController = TextEditingController(
-        text:
-        GlobalValues.code);
+  final codeController = CodeController(
+      patternMap: {
+        r'".*"': const TextStyle(color: Colors.yellow),
+        r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.green),
+      },
+      stringMap: {
+        "void": const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+        "print": const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+      },
+      text: GlobalValues.code,
+  );
 
   late var isButtonDisabled = false;
   bool _load = false;
@@ -34,6 +41,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   @override
   Widget build(BuildContext context) {
     codeController.text = GlobalValues.code;
+    codeController.selection = TextSelection.fromPosition(TextPosition(offset: codeController.text.length));
     return Container(
       color: const Color.fromARGB(255, 14, 22, 31),
       child: Row(
@@ -43,16 +51,18 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
             child: Stack(
               children: [
                 Positioned(
-                  child: Column(
+                  child: ListView(
                     children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: TextEnvironment(
-                            textEditingController: codeController,
-                            reversible: true,
-                          ),
+                      CodeField(
+                        decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 14, 22, 31),
                         ),
+                        textStyle: TextStyle(
+                          fontSize: GlobalValues.font,
+                          // color: Colors.white,
+                        ),
+                        controller: codeController,
+                        maxLines: null,
                       ),
                     ],
                   ),
@@ -71,6 +81,8 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                         setState(() {
                           _load = true;
                         });
+
+                        GlobalValues.code = codeController.text;
                         sendRequest(codeController.value.text,
                             inputController.value.text, outputController);
                       },
@@ -103,9 +115,8 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                   flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: TextEnvironment(
+                    child: TextBox(
                       textEditingController: inputController,
-                      reversible: false,
                     ),
                   ),
                 ),
