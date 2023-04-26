@@ -32,6 +32,7 @@ class LoginController extends GetxController {
       debugPrint(out);
       if(out == "success"){
         debugPrint(out);
+        //userPreferences();
 
         Get.rootDelegate.toNamed(Routes.profile);
       }
