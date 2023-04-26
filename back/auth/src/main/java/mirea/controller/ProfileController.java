@@ -1,5 +1,8 @@
 package mirea.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mirea.data.UsersRepository;
 import mirea.model.User;
@@ -23,6 +26,13 @@ public class ProfileController {
 
 
     @GetMapping("/profile/{id}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Профиль не найден"),
+            @ApiResponse(responseCode = "200", description = "Успешное получение профиля")
+    })
+    @Operation(
+            summary = "Получение профиля"
+    )
     public User getUser(@PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);
         if (u.isPresent()) {
@@ -32,6 +42,13 @@ public class ProfileController {
         throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Профиль не найден"),
+            @ApiResponse(responseCode = "200", description = "Успешное обновление профиля")
+    })
+    @Operation(
+            summary = "Обновление существующего профиля"
+    )
     @PatchMapping("/profile/{id}")
     public void updateUser(@RequestBody User user, @PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);
@@ -43,6 +60,13 @@ public class ProfileController {
         usersRepo.save(user);
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Профиль уже существует"),
+            @ApiResponse(responseCode = "200", description = "Успешное сохранение нового профиля")
+    })
+    @Operation(
+            summary = "Сохранение нового профиля"
+    )
     @PostMapping("/profile/{id}")
     public void saveUser(@RequestBody User user, @PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);

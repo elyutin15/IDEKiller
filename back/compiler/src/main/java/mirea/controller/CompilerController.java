@@ -65,7 +65,7 @@ public class CompilerController {
             summary = "Получение кодов"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "Любая ошибка при запросе к бд", content = {}),
+            @ApiResponse(responseCode = "500", description = "Любая ошибка при запросе к бд"),
             @ApiResponse(responseCode = "200", description = "Успешное получение 0+ кодов")
     })
     @CrossOrigin(origins = {"${frontend.url"})

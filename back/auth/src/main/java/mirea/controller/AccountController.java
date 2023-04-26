@@ -1,6 +1,8 @@
 package mirea.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import mirea.data.UsersRepository;
 import mirea.model.EntryUser;
@@ -35,6 +37,10 @@ public class AccountController {
     @Operation(
             summary = "Регистрация пользователя"
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Любая ошибка при запросе к бд"),
+            @ApiResponse(responseCode = "200", description = "Успешная регистрация")
+    })
     @PostMapping("/register")
     public void register(@RequestBody User user) {
         user.encodePassword(passwordEncoder);
@@ -56,6 +62,9 @@ public class AccountController {
         return "loginpage";
     }
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Всегда, даже при ошибках. Возвращается success или failed")
+    })
     @Operation(
             summary = "Логин пользователя"
     )
