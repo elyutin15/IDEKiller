@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpServerErrorException;
 
 
 @Tag(name="Контроллер для регистрации и логина пользователей")
@@ -34,16 +36,15 @@ public class AccountController {
             summary = "Регистрация пользователя"
     )
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
+    public void register(@RequestBody User user) {
         user.encodePassword(passwordEncoder);
         log.info("requested for registration user - {}", user);
         try {
             usersRepo.save(user);
-            return "success";
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.toString());
-            return "fail";
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
         }
     }
 

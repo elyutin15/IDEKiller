@@ -3,14 +3,20 @@ package mirea.model;
 
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Transient;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 @Data
+@Embeddable
+@NoArgsConstructor
 public class Code {
     String code;
 
     @JsonIgnore
+    @Transient
     ObjectMapper mapper;
 
     @JsonCreator
