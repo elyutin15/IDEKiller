@@ -14,7 +14,8 @@ class LoginController extends GetxController {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> loginRequest() async {
-    var url = 'http://localhost:8080/login';
+    var url = 'http://localhost:8081/login';
+
     await http
         .post(Uri.parse(url),
         headers: {
@@ -31,6 +32,7 @@ class LoginController extends GetxController {
       debugPrint(out);
       if(out == "success"){
         debugPrint(out);
+
         Get.rootDelegate.toNamed(Routes.profile);
       }
     });
