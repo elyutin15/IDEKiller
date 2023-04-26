@@ -12,4 +12,5 @@ class Routes {
   static String homeRoute = '/';
   static String authentication = '/authentication';
   static String profile = '/profile';
+  static String editProfile = '/profile/edit';
 }

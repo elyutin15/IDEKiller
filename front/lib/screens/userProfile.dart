@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
 import 'package:idekiller/utils/userPreferences.dart';
 import 'package:idekiller/screens/auth/widgets/appbarWidget.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 import 'package:idekiller/screens/auth/widgets/numberWidget.dart';
 import 'package:idekiller/screens/auth/widgets/profileWidget.dart';
+import 'package:idekiller/utils/routes.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -24,7 +26,9 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           ProfileWidget(
             imagePath: user.imagePath,
-            onClicked: () async {},
+            onClicked: () {
+              Get.rootDelegate.toNamed(Routes.editProfile);
+            },
           ),
           const SizedBox(height: 24),
           buildName(user),
