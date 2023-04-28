@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
 
@@ -41,16 +38,17 @@ public class AccountController {
             @ApiResponse(responseCode = "500", description = "Любая ошибка при запросе к бд"),
             @ApiResponse(responseCode = "200", description = "Успешная регистрация")
     })
+    @CrossOrigin(origins = {"${frontend.url}"})
     @PostMapping("/register")
-    public void register(@RequestBody User user) {
+    public User register(@RequestBody User user) {
         user.encodePassword(passwordEncoder);
         log.info("requested for registration user - {}", user);
         try {
-            usersRepo.save(user);
+            return usersRepo.save(user);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.toString());
-            throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(500), "Ошибка на сервере");
         }
     }
 
@@ -63,20 +61,30 @@ public class AccountController {
     }
 
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Всегда, даже при ошибках. Возвращается success или failed")
+            @ApiResponse(responseCode = "200", description = "Успех"),
+            @ApiResponse(responseCode = "500", description = "Ошибка в базе данных"),
+            @ApiResponse(responseCode = "501", description = "Ошибка. Пароль неверный"),
+            @ApiResponse(responseCode = "502", description = "Ошибка. Пользователь не найден")
     })
     @Operation(
             summary = "Логин пользователя"
     )
+    @CrossOrigin(origins = {"${frontend.url}"})
     @PostMapping("/login")
-    public String loginUser(@RequestBody EntryUser entryUser) {
-        User u = usersRepo.findByName(entryUser.getName());
-        if (u == null) {
-            return "failed";
+    public User loginUser(@RequestBody EntryUser entryUser) {
+        User u;
+        try {
+            u = usersRepo.findByNumber(entryUser.getNumber());
+        } catch (Exception e) {
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
         }
-        return entryUser.verify(u, passwordEncoder)
-                ? "success"
-                : "failed";
+        if (u == null) {
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(502), "Ошибка. Пользователь не найден");
+        }
+        if (entryUser.verify(u, passwordEncoder)) {
+            return u;
+        }
+        throw new HttpServerErrorException(HttpStatusCode.valueOf(501), "Ошибка. Пароль неверный");
     }
 
 

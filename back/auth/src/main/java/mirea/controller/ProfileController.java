@@ -24,8 +24,6 @@ public class ProfileController {
     @Autowired
     UsersRepository usersRepo;
 
-
-    @GetMapping("/profile/{id}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Профиль не найден"),
             @ApiResponse(responseCode = "200", description = "Успешное получение профиля")
@@ -33,6 +31,8 @@ public class ProfileController {
     @Operation(
             summary = "Получение профиля"
     )
+    @CrossOrigin(origins = {"${frontend.url}"})
+    @GetMapping("/profile/{id}")
     public User getUser(@PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);
         if (u.isPresent()) {
@@ -49,6 +49,7 @@ public class ProfileController {
     @Operation(
             summary = "Обновление существующего профиля"
     )
+    @CrossOrigin(origins = {"${frontend.url}"})
     @PatchMapping("/profile/{id}")
     public void updateUser(@RequestBody User user, @PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);
@@ -67,6 +68,7 @@ public class ProfileController {
     @Operation(
             summary = "Сохранение нового профиля"
     )
+    @CrossOrigin(origins = {"${frontend.url}"})
     @PostMapping("/profile/{id}")
     public void saveUser(@RequestBody User user, @PathVariable Long id) {
         Optional<User> u = usersRepo.findById(id);

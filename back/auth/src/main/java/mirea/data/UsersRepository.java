@@ -4,5 +4,5 @@ import mirea.model.User;
 import org.springframework.data.repository.CrudRepository;
 
 public interface UsersRepository extends CrudRepository<User, Long> {
-    User findByName(String name);
+    User findByNumber(String number);
 }

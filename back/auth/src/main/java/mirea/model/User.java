@@ -26,11 +26,12 @@ public class User{
 
     @NotNull
     @Size(max=20000)
-    @Column(unique = true)
     private String name;
 
 
     @Size(max=20000)
+    @NotNull
+    @Column(unique = true)
     private String number;
 
     @Size(max=20000)
