@@ -22,8 +22,8 @@ class LoginController extends GetxController {
           "Content-Type": "application/json",
         },
         body: json.encode({
-          "email": emailController.text,
-          "password": passwordController.text
+          "name": emailController.text,
+          "pass": passwordController.text
         }))
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
@@ -44,7 +44,7 @@ class LoginController extends GetxController {
       var url = Uri.parse(
           ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.loginEmail);
       Map body = {
-        'email': emailController.text.trim(),
+        'login': emailController.text.trim(),
         'password': passwordController.text
       };
       http.Response response =

@@ -15,7 +15,7 @@ class RegistrationController extends GetxController {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> registerRequest() async {
-    var url = 'http://localhost:8080/registration';
+    var url = 'http://localhost:8081/register';
     await http
         .post(Uri.parse(url),
         headers: {
@@ -23,7 +23,7 @@ class RegistrationController extends GetxController {
         },
         body: json.encode({
           "name": nameController.text,
-          "email": emailController.text,
+          "number": emailController.text,
           "password": passwordController.text
         }))
         .then((http.Response response) {
@@ -40,7 +40,7 @@ class RegistrationController extends GetxController {
           ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.registerEmail);
       Map body = {
         'name': nameController.text,
-        'email': emailController.text.trim(),
+        'number': emailController.text.trim(),
         'password': passwordController.text
       };
 
