@@ -17,7 +17,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    const user = UserPreferences.myUser;
+    User user = UserPreferences().myUser;
 
     return Scaffold(
       appBar: buildAppBar(context),
@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
         physics: const BouncingScrollPhysics(),
         children: [
           ProfileWidget(
-            imagePath: user.imagePath,
+            imagePath: user.profilePic,
             onClicked: () {
               Get.rootDelegate.toNamed(Routes.editProfile);
             },
@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       const SizedBox(height: 4),
       Text(
-        user.email,
+        user.number,
         style: const TextStyle(color: Colors.grey),
       )
     ],
