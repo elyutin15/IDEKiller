@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+
 @Data
 @Entity
 @Table(name="users")
@@ -60,7 +62,7 @@ public class User{
             @JsonProperty("number") String number,
             @JsonProperty("students") List<UserId> students,
             @JsonProperty("teachers") List<UserId> teachers,
-            @JsonProperty("password") String password
+            @JsonProperty(value="password", access=WRITE_ONLY) String password
     ) {
         this.profilePic = picture;
         this.name = name;

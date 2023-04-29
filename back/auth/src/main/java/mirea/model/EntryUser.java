@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
+
 @Data
 public class EntryUser {
     String number;
@@ -13,7 +15,7 @@ public class EntryUser {
     @JsonCreator
     public EntryUser(
             @JsonProperty("number") String number,
-            @JsonProperty("password") String password
+            @JsonProperty(value="password", access = WRITE_ONLY) String password
     ) {
         this.number = number;
         this.password = password;
