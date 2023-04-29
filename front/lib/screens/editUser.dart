@@ -15,7 +15,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  User user = UserPreferences.myUser;
+  User user = UserPreferences().myUser;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -25,7 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user.imagePath,
+              imagePath: user.profilePic,
               isEdit: true,
               onClicked: ()  {
                 showDialog(context: context, builder: (context){
@@ -58,9 +58,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
-              label: 'Email',
-              text: user.email,
-              onChanged: (email) {},
+              label: 'number',
+              text: user.number,
+              onChanged: (number) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(

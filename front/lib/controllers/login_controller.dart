@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:idekiller/controllers/model.dart';
 import 'package:idekiller/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:idekiller/screens/compiler.dart';
 import 'package:http/http.dart' as http;
 import 'package:idekiller/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:idekiller/utils/userPreferences.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -22,19 +24,20 @@ class LoginController extends GetxController {
           "Content-Type": "application/json",
         },
         body: json.encode({
-          "name": emailController.text,
-          "pass": passwordController.text
+          "number": emailController.text,
+          "password": passwordController.text
         }))
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.contentLength}");
-      var out = response.body;
-      debugPrint(out);
-      if(out == "success"){
-        debugPrint(out);
-        //userPreferences();
-
+      //var out = response.body;
+      final json = jsonDecode(response.body);
+      //debugPrint(out);
+      if(response.statusCode == 200){
+        //debugPrint(out);
         Get.rootDelegate.toNamed(Routes.profile);
+        UserPreferences().myUser = User.fromJson(json);
+        //Get.rootDelegate.toNamed(Routes.profile);
       }
     });
   }
