@@ -48,7 +48,7 @@ public class CompilerController {
     @Operation(
             summary = "Сохранение кода"
     )
-    @CrossOrigin(origins = {"${frontend.url"})
+    @CrossOrigin(origins = {"${frontend.url}"})
     @PostMapping("/save")
     public String saveCode(@RequestBody CodeDto dto) {
         try {
@@ -68,7 +68,7 @@ public class CompilerController {
             @ApiResponse(responseCode = "500", description = "Любая ошибка при запросе к бд"),
             @ApiResponse(responseCode = "200", description = "Успешное получение 0+ кодов")
     })
-    @CrossOrigin(origins = {"${frontend.url"})
+    @CrossOrigin(origins = {"${frontend.url}"})
     @GetMapping("/get")
     public List<CodeDto> getCode(@RequestHeader Long userid) {
         try {
