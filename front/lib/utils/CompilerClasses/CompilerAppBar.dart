@@ -29,9 +29,6 @@ class CompilerAppBar extends StatelessWidget {
             width: 20,
           ),
           const SaveCodeButton(),
-          const SizedBox(
-            width: 20,
-          ),
           const RegistrationPage(),
         ],
       ),
