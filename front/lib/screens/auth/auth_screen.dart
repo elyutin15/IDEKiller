@@ -82,17 +82,17 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget registerWidget() {
     return Column(
       children: [
-        InputTextFieldWidget(registrationController.nameController, 'name'),
+        InputTextFieldWidget(registrationController.nameController, 'Name'),
         SizedBox(
           height: 20,
         ),
         InputTextFieldWidget(
-            registrationController.emailController, 'email address'),
+            registrationController.emailController, 'Phone number'),
         SizedBox(
           height: 20,
         ),
         InputTextFieldWidget(
-            registrationController.passwordController, 'password'),
+            registrationController.passwordController, 'Password'),
         SizedBox(
           height: 20,
         ),
@@ -110,11 +110,11 @@ class _AuthScreenState extends State<AuthScreen> {
         SizedBox(
           height: 20,
         ),
-        InputTextFieldWidget(loginController.emailController, 'email address'),
+        InputTextFieldWidget(loginController.emailController, 'Phone number'),
         SizedBox(
           height: 20,
         ),
-        InputTextFieldWidget(loginController.passwordController, 'password'),
+        InputTextFieldWidget(loginController.passwordController, 'Password'),
         SizedBox(
           height: 20,
         ),

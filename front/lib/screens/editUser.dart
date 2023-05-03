@@ -6,7 +6,9 @@ import 'package:idekiller/utils/userPreferences.dart';
 import 'auth/widgets/appbarWidget.dart';
 import 'auth/widgets/profileWidget.dart';
 import 'auth/widgets/textFieldWIdget.dart';
+import 'package:http/http.dart' as http;
 import 'package:idekiller/utils/routes.dart';
+import 'package:idekiller/screens/auth/widgets/input_fields.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -15,8 +17,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  User user = UserPreferences().myUser;
-
+  TextEditingController aboutController = TextEditingController(text: user!.about);
+  TextEditingController nameController = TextEditingController(text: user!.name);
+  TextEditingController numberController = TextEditingController(text: user!.number);
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: buildAppBar(context),
@@ -25,7 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user.profilePic,
+              imagePath: user!.profilePic,
               isEdit: true,
               onClicked: ()  {
                 showDialog(context: context, builder: (context){
@@ -40,7 +43,59 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       ElevatedButton(onPressed: (){
                         Navigator.of(context).pop();
                       }, child: Text("No")),
-                      ElevatedButton(onPressed: (){
+                      ElevatedButton(onPressed: () async {
+                        user!.about = aboutController.text;
+                        user!.name = nameController.text;
+                        user!.number = numberController.text;
+
+                        var url = 'http://localhost:8081/profile/${user!.id}';
+
+                        await http
+                            .patch(Uri.parse(url),
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: userToJson(user!)/*json.encode({
+            "number": 'a',
+            "password": 'a'
+          })*/)
+                            .then((http.Response response) {
+                          switch(response.statusCode){
+                            case 200:
+                              user = userFromJson(response.body);
+                              Get.rootDelegate.toNamed(Routes.profile);
+                              break;
+                            case 500:
+                              debugPrint('Проблема с подключением к базе данных');
+                              break;
+                            default:
+                              debugPrint('');
+                              break;
+                          }
+                        });
+                        /*
+                        var url = 'http://localhost:8081/profile/${user!.id}';
+
+                        await http
+                            .patch(Uri.parse(url),
+                            headers: {
+                              "Content-Type": "application/json",
+                            },
+                            body: user!.toJson())
+                            .then((http.Response response) {
+                          switch(response.statusCode){
+                            case 200:
+                              user = userFromJson(response.body);
+                              Get.rootDelegate.toNamed(Routes.profile);
+                              break;
+                            case 500:
+                              debugPrint('Проблема с подключением к базе данных');
+                              break;
+                            default:
+                              debugPrint('');
+                              break;
+                          }
+                        });*/
                         Get.rootDelegate.toNamed(Routes.profile);
                       }, child: Text("Yes")),
                     ],
@@ -52,20 +107,23 @@ class _EditProfilePageState extends State<EditProfilePage> {
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
+              controller: nameController,
               label: 'Full Name',
-              text: user.name,
+              text: user!.name,
               onChanged: (name) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
+              controller: numberController,
               label: 'number',
-              text: user.number,
+              text: user!.number,
               onChanged: (number) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
+              controller: aboutController,
               label: 'About',
-              text: user.about,
+              text: user!.about,
               maxLines: 5,
               onChanged: (about) {},
             ),

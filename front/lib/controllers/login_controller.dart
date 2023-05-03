@@ -28,16 +28,26 @@ class LoginController extends GetxController {
           "password": passwordController.text
         }))
         .then((http.Response response) {
-      debugPrint("Response status: ${response.statusCode}");
+          int sCode = response.statusCode;
+      debugPrint("Response status: ${sCode}");
       debugPrint("Response body: ${response.contentLength}");
-      //var out = response.body;
-      final json = jsonDecode(response.body);
-      //debugPrint(out);
-      if(response.statusCode == 200){
-        //debugPrint(out);
-        Get.rootDelegate.toNamed(Routes.profile);
-        UserPreferences().myUser = User.fromJson(json);
-        //Get.rootDelegate.toNamed(Routes.profile);
+      switch(response.statusCode){
+        case 200:
+          user = userFromJson(response.body);
+          Get.rootDelegate.toNamed(Routes.profile);
+          break;
+        case 500:
+          debugPrint('Проблема с подключением к базе данных');
+          break;
+        case 501:
+          debugPrint('Пароль не верный');
+          break;
+        case 502:
+          debugPrint('Пользователь не найден');
+          break;
+        default:
+          debugPrint('');
+          break;
       }
     });
   }
