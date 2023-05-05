@@ -25,7 +25,6 @@ class User {
   String number;
   List<UserID> students;
   List<UserID> teachers;
-  String password;
   int id;
   String about;
 
@@ -35,29 +34,27 @@ class User {
     required this.number,
     required this.students,
     required this.teachers,
-    required this.password,
     required this.id,
     required this.about,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    profilePic: json["profilePic"],
-    name: json["name"],
-    number: json["number"],
+    profilePic: json["profilePic"] ?? '',
+    name: json["name"] ?? '',
+    number: json["number"] ?? '',
     students: List<UserID>.from(json["students"].map((x) => UserID.fromJson(x))),
     teachers: List<UserID>.from(json["teachers"].map((x) => UserID.fromJson(x))),
-    password: json["password"],
     id: json["id"],
-    about: json["about"],
+    about: json["about"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
     "profilePic": profilePic,
     "name": name,
     "number": number,
-    "students": List<dynamic>.from(students.map((x) => x.toJson())),
-    "teachers": List<dynamic>.from(teachers.map((x) => x.toJson())),
-    "password": password,
+    "students": students,//List<dynamic>.from(students.map((x) => x.toJson()))
+    "teachers": teachers,//List<dynamic>.from(teachers.map((x) => x.toJson())),
+    "password": "s",
     "id": id,
     "about": about,
   };
@@ -75,7 +72,7 @@ class UserID {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    'id': id,
   };
 }
 

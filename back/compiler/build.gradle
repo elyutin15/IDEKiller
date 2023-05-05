@@ -38,5 +38,12 @@ jar {
                 'Main-Class': 'mirea.AuthApplication'
         )
     }
+}
+
+task wrapper(type: Wrapper){
+    gradleVersion = '7.5.1'
+}
+
+task prepareKotlinBuildScriptModel {
 
 }

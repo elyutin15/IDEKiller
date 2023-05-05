@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/Buttons.dart';
 import 'package:idekiller/utils/CompilerClasses/DropdownButton.dart';
+import 'package:idekiller/utils/CompilerClasses/SaveCodeButton.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 
 class CompilerAppBar extends StatelessWidget {
@@ -27,6 +28,7 @@ class CompilerAppBar extends StatelessWidget {
           const SizedBox(
             width: 20,
           ),
+          const SaveCodeButton(),
           const RegistrationPage(),
         ],
       ),

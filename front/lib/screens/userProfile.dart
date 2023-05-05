@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 import 'package:idekiller/screens/auth/widgets/numberWidget.dart';
 import 'package:idekiller/screens/auth/widgets/profileWidget.dart';
 import 'package:idekiller/utils/routes.dart';
+import 'package:http/http.dart' as http;
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -16,42 +19,51 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
-  Widget build(BuildContext context) {
-    User user = UserPreferences().myUser;
+  void initState() {
+  super.initState();
 
-    return Scaffold(
-      appBar: buildAppBar(context),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath: user.profilePic,
-            onClicked: () {
-              Get.rootDelegate.toNamed(Routes.editProfile);
-            },
-          ),
-          const SizedBox(height: 24),
-          buildName(user),
-          const SizedBox(height: 24),
-          Center(child: buildUpgradeButton()),
-          const SizedBox(height: 24),
-          NumbersWidget(),
-          const SizedBox(height: 48),
-          buildAbout(user),
-        ],
-      ),
-    );
+
   }
 
-  Widget buildName(User user) => Column(
+  @override
+  Widget build(BuildContext context) {
+
+
+      return Scaffold(
+        appBar: buildAppBar(context),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            ProfileWidget(
+              imagePath: user!.profilePic,
+              onClicked: () {
+                Get.rootDelegate.toNamed(Routes.editProfile);
+              },
+            ),
+
+            const SizedBox(height: 24),
+            buildName(),
+            const SizedBox(height: 24),
+            Center(child: buildUpgradeButton()),
+            const SizedBox(height: 24),
+            NumbersWidget(),
+            const SizedBox(height: 48),
+            buildAbout(),
+          ],
+        ),
+      );
+    }
+
+
+  Widget buildName() => Column(
     children: [
       Text(
-        user.name,
+        user!.name,
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
       ),
       const SizedBox(height: 4),
       Text(
-        user.number,
+        user!.number,
         style: const TextStyle(color: Colors.grey),
       )
     ],
@@ -59,10 +71,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget buildUpgradeButton() => ButtonWidget(
     text: 'Show saved files',
-    onClicked: () {},
+    onClicked: () async {
+    },
   );
 
-  Widget buildAbout(User user) => Container(
+  Widget buildAbout() => Container(
     padding: const EdgeInsets.symmetric(horizontal: 48),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 16),
         Text(
-          user.about,
+          user!.about,
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
       ],

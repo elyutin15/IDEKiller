@@ -9,12 +9,13 @@ class InputTextFieldWidget extends StatelessWidget {
     return Container(
       height: 46,
       child: TextField(
+        style: TextStyle(color: Colors.white),
         controller: textEditingController,
         decoration: InputDecoration(
             alignLabelWithHint: true,
             focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.black)),
-            fillColor: Colors.white54,
+                borderSide: BorderSide(color: Colors.white)),
+            fillColor: Colors.white70,
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.grey),
             contentPadding: EdgeInsets.only(bottom: 15),
