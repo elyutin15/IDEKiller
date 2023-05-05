@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CodeRepository extends JpaRepository<CodeDto, Long> {
     public List<CodeDto> findAllByUserid(Long userid);
+
+    CodeDto findById(Integer codeId);
 }

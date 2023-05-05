@@ -57,8 +57,17 @@ public class ProfileController {
             log.error("User with id {} not found", id);
             throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
         }
-        user.setId(u.get().getId());
-        usersRepo.save(user);
+        User extractedUser = u.get();
+        extractedUser.setAbout(user.getAbout());
+        extractedUser.setName(user.getName());
+        extractedUser.setNumber(user.getNumber());
+        extractedUser.setProfilePic(user.getProfilePic());
+        extractedUser.setStudents(user.getStudents());
+        extractedUser.setTeachers(user.getTeachers());
+        if (user.getPassword() != null) {
+            extractedUser.setPassword(user.getPassword());
+        }
+        usersRepo.save(extractedUser);
     }
 
     @ApiResponses(value = {

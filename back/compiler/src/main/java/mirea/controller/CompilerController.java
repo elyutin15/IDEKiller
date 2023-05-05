@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.io.IOException;
 import java.util.List;
 
 @Tag(name="Контроллер компилятора и смежных функцийз")
@@ -35,19 +34,51 @@ public class CompilerController {
     @Operation(
             summary = "Компиляция кода"
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка"),
+            @ApiResponse(responseCode = "200", description = "Код успешно скомпилировался")
+    })
     @CrossOrigin(origins = {"${frontend.url}"})
     @ResponseBody
     @PostMapping("/")
-    public Output compileCode(@RequestBody CompilationRequest compilationRequest) throws IOException {
+    public Output compileCode(@RequestBody CompilationRequest compilationRequest) {
         log.info("Requested compilation");
-        Output out = compiler.compile(compilationRequest);
-        log.info("Outputted code: {}", out.getOutput());
-        return out;
+        try {
+            Output out = compiler.compile(compilationRequest);
+            log.info("Outputted code: {}", out.getOutput());
+            return out;
+        } catch (Exception e) {
+            log.error(e.toString());
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
+        }
+    }
+
+    @Operation(
+            summary = "Получение кода по id кода"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Ошибка на сервере"),
+            @ApiResponse(responseCode = "200", description = "Код успешно получен")
+    })
+    @CrossOrigin(origins = {"${frontend.url}"})
+    @ResponseBody
+    @PostMapping("/{id}")
+    public CodeDto getCode(@PathVariable Integer codeId) {
+        try {
+            return repo.findById(codeId);
+        } catch (Exception e) {
+            log.error(e.toString());
+            throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
+        }
     }
 
     @Operation(
             summary = "Сохранение кода"
     )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка"),
+            @ApiResponse(responseCode = "200", description = "Код успешно сохранен")
+    })
     @CrossOrigin(origins = {"${frontend.url}"})
     @PostMapping("/save")
     public String saveCode(@RequestBody CodeDto dto) {
@@ -70,7 +101,7 @@ public class CompilerController {
     })
     @CrossOrigin(origins = {"${frontend.url}"})
     @GetMapping("/get")
-    public List<CodeDto> getCode(@RequestHeader Long userid) {
+    public List<CodeDto> getCodes(@RequestHeader Long userid) {
         try {
             return repo.findAllByUserid(userid);
         } catch (Exception e) {
