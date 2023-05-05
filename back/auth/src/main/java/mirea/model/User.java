@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
@@ -45,7 +47,6 @@ public class User{
     @ManyToMany
     private List<UserId> teachers;
 
-    @Setter(AccessLevel.NONE)
     @JsonIgnore
     @NotNull
     @Size(max=20000)
