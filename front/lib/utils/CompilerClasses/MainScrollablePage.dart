@@ -4,10 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
 import 'package:idekiller/utils/CompilerClasses/RunText.dart';
-import 'package:idekiller/utils/CompilerClasses/TextEnvironment.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 import 'package:idekiller/utils/CompilerClasses/TextBox.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainScrollablePage extends StatefulWidget {
   const MainScrollablePage({Key? key}) : super(key: key);
@@ -40,6 +41,22 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getString();
+  }
+
+
+  Future<void> getString() async {
+    final prefs = await SharedPreferences.getInstance();
+    codeController.text = prefs.getString('code') ?? GlobalValues.code;
+    GlobalValues.code = codeController.text;
+  }
+  Future setString(String str) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.setString('code', str);
+  }
+  @override
   Widget build(BuildContext context) {
     codeController.text = GlobalValues.code;
     codeController.selection = TextSelection.fromPosition(TextPosition(offset: codeController.text.length));
@@ -55,6 +72,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                   child: ListView(
                     children: [
                       CodeField(
+                        onChanged: (newValue) => setString(newValue),
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 14, 22, 31),
                         ),

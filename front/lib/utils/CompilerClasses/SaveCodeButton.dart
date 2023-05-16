@@ -18,7 +18,7 @@ class SaveCodeButton extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
-          if (GlobalValues.isRegistered == true) {
+          if (isAuthorized == true) {
             sendRequest();
           } else {
             showDialog(
@@ -97,7 +97,7 @@ class SaveCodeButton extends StatelessWidget {
             },
             body: json.encode({
               "code": {"code": GlobalValues.code},
-              "userid": UserPreferences().myUser.id,
+              "userid": user!.id,
             }))
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
