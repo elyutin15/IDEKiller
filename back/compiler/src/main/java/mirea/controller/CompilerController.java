@@ -42,7 +42,7 @@ public class CompilerController {
     @ResponseBody
     @PostMapping("/")
     public Output compileCode(@RequestBody CompilationRequest compilationRequest) {
-        log.info("Requested compilation");
+        log.info("Requested compilation: {}", compilationRequest);
         try {
             Output out = compiler.compile(compilationRequest);
             log.info("Outputted code: {}", out.getOutput());

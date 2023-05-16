@@ -10,14 +10,18 @@ import lombok.SneakyThrows;
 public class Code {
     String code;
 
+    Language language;
+
     @JsonIgnore
     ObjectMapper mapper;
 
     @JsonCreator
     public Code(
-            @JsonProperty("code") String code
+            @JsonProperty("code") String code,
+            @JsonProperty("language") String language
     ) {
         this.code = code;
+        this.language = Language.parse(language);
         mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
