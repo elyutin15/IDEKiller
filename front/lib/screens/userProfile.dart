@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
-import 'package:idekiller/utils/userPreferences.dart';
+import 'package:idekiller/utils/GlobalValues.dart';
 import 'package:idekiller/screens/auth/widgets/appbarWidget.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 import 'package:idekiller/screens/auth/widgets/numberWidget.dart';
@@ -18,24 +18,35 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  //late Future<User> _user;
+  late User user;
+
   @override
   void initState() {
   super.initState();
+    //_user = getUserData(1);
+    getUserData(1);
+  }
 
-
+  Future<void> getUserData(int userId) async {
+    final response = await http.get(Uri.parse('http://localhost:8081/profile/$userId'));
+    if (response.statusCode == 200) {
+      final userData = json.decode(response.body);
+      user = userFromJson(response.body);
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
-
       return Scaffold(
         appBar: buildAppBar(context),
         body: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user!.profilePic,
+              imagePath: GlobalValues.user.profilePic,
               onClicked: () {
                 Get.rootDelegate.toNamed(Routes.editProfile);
               },
@@ -52,18 +63,19 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       );
+
     }
 
 
   Widget buildName() => Column(
     children: [
       Text(
-        user!.name,
+        GlobalValues.user.name,
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
       ),
       const SizedBox(height: 4),
       Text(
-        user!.number,
+        GlobalValues.user.number,
         style: const TextStyle(color: Colors.grey),
       )
     ],
@@ -86,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 16),
         Text(
-          user!.about,
+          GlobalValues.user.about,
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
       ],

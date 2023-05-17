@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/screens/compiler.dart';
 import 'package:http/http.dart' as http;
+import 'package:idekiller/utils/GlobalValues.dart';
 import 'package:idekiller/utils/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:idekiller/utils/userPreferences.dart';
 
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
@@ -33,7 +33,7 @@ class LoginController extends GetxController {
       debugPrint("Response body: ${response.contentLength}");
       switch(response.statusCode){
         case 200:
-          user = userFromJson(response.body);
+          GlobalValues.user = userFromJson(response.body);
           Get.rootDelegate.toNamed(Routes.profile);
           break;
         case 500:
