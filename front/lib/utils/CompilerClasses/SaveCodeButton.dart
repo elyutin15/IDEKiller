@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:idekiller/utils/GlobalValues.dart';
-import 'package:idekiller/utils/userPreferences.dart';
 
 class SaveCodeButton extends StatelessWidget {
   const SaveCodeButton({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class SaveCodeButton extends StatelessWidget {
           color: Colors.white,
         ),
         onPressed: () {
-          if (isAuthorized == true) {
+          if (GlobalValues.isAuthorized == true) {
             sendRequest();
           } else {
             showDialog(
@@ -97,7 +96,7 @@ class SaveCodeButton extends StatelessWidget {
             },
             body: json.encode({
               "code": {"code": GlobalValues.code},
-              "userid": user!.id,
+              "userid": GlobalValues.user.id,
             }))
         .then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");

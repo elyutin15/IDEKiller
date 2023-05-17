@@ -2,8 +2,8 @@ import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
-import 'package:idekiller/utils/userPreferences.dart';
 import 'auth/widgets/appbarWidget.dart';
+import 'package:idekiller/utils/GlobalValues.dart';
 import 'auth/widgets/profileWidget.dart';
 import 'auth/widgets/textFieldWIdget.dart';
 import 'package:http/http.dart' as http;
@@ -17,9 +17,9 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  TextEditingController aboutController = TextEditingController(text: user!.about);
-  TextEditingController nameController = TextEditingController(text: user!.name);
-  TextEditingController numberController = TextEditingController(text: user!.number);
+  TextEditingController aboutController = TextEditingController(text: GlobalValues.user.about);
+  TextEditingController nameController = TextEditingController(text: GlobalValues.user.name);
+  TextEditingController numberController = TextEditingController(text: GlobalValues.user.number);
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: buildAppBar(context),
@@ -28,7 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           physics: BouncingScrollPhysics(),
           children: [
             ProfileWidget(
-              imagePath: user!.profilePic,
+              imagePath: GlobalValues.user.profilePic,
               isEdit: true,
               onClicked: ()  {
                 showDialog(context: context, builder: (context){
@@ -44,25 +44,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         Navigator.of(context).pop();
                       }, child: Text("No")),
                       ElevatedButton(onPressed: () async {
-                        user!.about = aboutController.text;
-                        user!.name = nameController.text;
-                        user!.number = numberController.text;
+                        GlobalValues.user.about = aboutController.text;
+                        GlobalValues.user.name = nameController.text;
+                        GlobalValues.user.number = numberController.text;
 
-                        var url = 'http://localhost:8081/profile/${user!.id}';
+                        var url = 'http://localhost:8081/profile/${GlobalValues.user.id}';
 
                         await http
                             .patch(Uri.parse(url),
                             headers: {
                               "Content-Type": "application/json",
                             },
-                            body: userToJson(user!)/*json.encode({
+                            body: userToJson(GlobalValues.user)/*json.encode({
             "number": 'a',
             "password": 'a'
           })*/)
                             .then((http.Response response) {
                           switch(response.statusCode){
                             case 200:
-                              user = userFromJson(response.body);
+                              GlobalValues.user = userFromJson(response.body);
                               Get.rootDelegate.toNamed(Routes.profile);
                               break;
                             case 500:
@@ -109,21 +109,21 @@ class _EditProfilePageState extends State<EditProfilePage> {
             TextFieldWidget(
               controller: nameController,
               label: 'Full Name',
-              text: user!.name,
+              text: GlobalValues.user.name,
               onChanged: (name) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
               controller: numberController,
               label: 'number',
-              text: user!.number,
+              text: GlobalValues.user.number,
               onChanged: (number) {},
             ),
             const SizedBox(height: 24),
             TextFieldWidget(
               controller: aboutController,
               label: 'About',
-              text: user!.about,
+              text: GlobalValues.user.about,
               maxLines: 5,
               onChanged: (about) {},
             ),
