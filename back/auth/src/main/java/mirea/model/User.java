@@ -1,16 +1,17 @@
 package mirea.model;
 
 
-import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY;
@@ -41,9 +42,11 @@ public class User{
     @Size(max=20000)
     private String about;
 
+    @Embedded
     @ManyToMany
     private List<UserId> students;
 
+    @Embedded
     @ManyToMany
     private List<UserId> teachers;
 
@@ -51,10 +54,6 @@ public class User{
     @NotNull
     @Size(max=20000)
     private String password;
-
-    @JsonIgnore
-    @Transient
-    private ObjectMapper mapper;
 
     @JsonCreator
     public User(
@@ -68,20 +67,13 @@ public class User{
         this.profilePic = picture;
         this.name = name;
         this.number = number;
-        this.students = students;
-        this.teachers = teachers;
+        this.students = students == null ? new ArrayList<>() : students;
+        this.teachers = teachers == null ? new ArrayList<>() : teachers;
         this.password = password;
-        mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     }
 
     public void encodePassword(PasswordEncoder encoder) {
         this.password = encoder.encode(this.password);
     }
 
-    @SneakyThrows
-    @Override
-    public String toString() {
-        return mapper.writeValueAsString(this);
-    }
 }
