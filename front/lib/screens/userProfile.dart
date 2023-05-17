@@ -18,17 +18,28 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  //late Future<User> _user;
+  late User user;
+
   @override
   void initState() {
   super.initState();
+    //_user = getUserData(1);
+    getUserData(1);
+  }
 
-
+  Future<void> getUserData(int userId) async {
+    final response = await http.get(Uri.parse('http://localhost:8081/profile/$userId'));
+    if (response.statusCode == 200) {
+      final userData = json.decode(response.body);
+      user = userFromJson(response.body);
+    } else {
+      throw Exception('Failed to load user data');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
-
       return Scaffold(
         appBar: buildAppBar(context),
         body: ListView(
@@ -52,6 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       );
+
     }
 
 
