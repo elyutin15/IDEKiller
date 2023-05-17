@@ -61,23 +61,14 @@ public class Compiler {
                 Files.write(inFile, "".getBytes(), StandardOpenOption.TRUNCATE_EXISTING);
                 continue;
             }
-            while (processReader.ready()) {
-                String line = processReader.readLine();
-                if (line == null)
-                    break;
-                Files.write(outFile, line.getBytes());
-            }
+            readProcessOutput(processReader, outFile);
         }
-        while (processReader.ready()) {
-            String line = processReader.readLine();
-            if (line == null)
-                break;
-            Files.write(outFile, line.getBytes());
-        }
+        readProcessOutput(processReader, outFile);
 
         final StringBuilder result = new StringBuilder();
-        Files.readAllLines(outFile).forEach(result::append);
+        Files.readAllLines(outFile).forEach(i -> result.append(i).append("\n"));
         eraseCode(path);
+        result.deleteCharAt(result.length() - 1);
         return new Output(result.toString());
     }
 
@@ -97,15 +88,7 @@ public class Compiler {
                 builder = new ProcessBuilder(
                         "cmd.exe",
                         "/c",
-                        "cd " + path + " && g++ -Wall -o Main Main.cpp"
-                );
-                builder.redirectErrorStream(true);
-                Process process = builder.start();
-                process.waitFor();
-                builder = new ProcessBuilder(
-                        "cmd.exe",
-                        "/c",
-                        "cd " + path + " && ./Main"
+                        "cd " + path + " && g++ -Wall -o Main Main.cpp && Main.exe"
                 );
                 builder.redirectErrorStream(true);
                 return builder;
@@ -113,7 +96,7 @@ public class Compiler {
                 builder = new ProcessBuilder(
                         "cmd.exe",
                         "/c",
-                        "cd " + path + " && gcc -Wall -o Main Main.cpp && .//Main"
+                        "cd " + path + " && gcc -Wall -o Main Main.c && Main.exe"
                 );
                 builder.redirectErrorStream(true);
                 return builder;
@@ -129,6 +112,16 @@ public class Compiler {
                 return null;
         }
 
+    }
+
+    private void readProcessOutput(BufferedReader processReader, Path outFile) throws IOException {
+        while (processReader.ready()) {
+            String line = processReader.readLine();
+            if (line == null)
+                break;
+            line += "\n";
+            Files.write(outFile, line.getBytes(), StandardOpenOption.APPEND);
+        }
     }
 
     private String writeCode(Code code) {
