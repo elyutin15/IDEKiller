@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:code_text_field/code_text_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
@@ -21,17 +23,16 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   final inputController = TextEditingController();
   final outputController = TextEditingController();
   final codeController = CodeController(
-      patternMap: {
-        r'".*"': const TextStyle(color: Colors.yellow),
-        r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.green),
-      },
-      stringMap: {
-        "void": const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
-        "print": const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
-      },
-      text: GlobalValues.code,
+    patternMap: {
+      r'".*"': const TextStyle(color: Colors.yellow),
+      r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.green),
+    },
+    stringMap: {
+      "void": const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+      "print": const TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+    },
+    text: GlobalValues.code,
   );
-
 
   late var isButtonDisabled = false;
   bool _load = false;
@@ -43,23 +44,32 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   @override
   void initState() {
     super.initState();
+
+    window.onBeforeUnload.listen((Event e) {
+      setString(codeController.text);
+      // код для обработки нажатия кнопки перезагрузки страницы
+      // например, можно вызвать функцию, которая сохраняет данные перед перезагрузкой
+    });
+
     getString();
   }
-
 
   Future<void> getString() async {
     final prefs = await SharedPreferences.getInstance();
     codeController.text = prefs.getString('code') ?? GlobalValues.code;
     GlobalValues.code = codeController.text;
   }
+
   Future setString(String str) async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.setString('code', str);
   }
+
   @override
   Widget build(BuildContext context) {
     codeController.text = GlobalValues.code;
-    codeController.selection = TextSelection.fromPosition(TextPosition(offset: codeController.text.length));
+    codeController.selection = TextSelection.fromPosition(
+        TextPosition(offset: codeController.text.length));
     return Container(
       color: const Color.fromARGB(255, 14, 22, 31),
       child: Row(
@@ -72,7 +82,6 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                   child: ListView(
                     children: [
                       CodeField(
-                        onChanged: (newValue) => setString(newValue),
                         decoration: const BoxDecoration(
                           color: Color.fromARGB(255, 14, 22, 31),
                         ),
@@ -185,10 +194,12 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
         .post(Uri.parse(url),
             headers: {
               "Content-Type": "application/json",
-              "CompilationLanguage": GlobalValues.language
             },
             body: json.encode({
-              "code": {"code": code},
+              "code": {
+                "code": code,
+                "language": GlobalValues.language.toLowerCase()
+              },
               "input": {"words": input}
             }))
         .then((http.Response response) {
