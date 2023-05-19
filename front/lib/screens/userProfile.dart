@@ -32,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<User> getUserData(int userId) async {
     final response = await http.get(Uri.parse('http://localhost:8081/profile/$userId'));
     if (response.statusCode == 200) {
-      final userData = json.decode(response.body);
+      //final userData = json.decode(response.body);
       return userFromJson(response.body);
     } else {
       throw Exception('Failed to load user data');

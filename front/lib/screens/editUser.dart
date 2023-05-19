@@ -48,7 +48,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                         GlobalValues.user.name = nameController.text;
                         GlobalValues.user.number = numberController.text;
 
-                        var url = 'http://localhost:8081/profile/${GlobalValues.user.id}';
+                        var url = 'http://localhost:8081/profile/2';
 
                         await http
                             .patch(Uri.parse(url),
@@ -62,7 +62,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                             .then((http.Response response) {
                           switch(response.statusCode){
                             case 200:
-                              GlobalValues.user = userFromJson(response.body);
+                              //GlobalValues.user = userFromJson(response.body);
                               Get.rootDelegate.toNamed(Routes.profile);
                               break;
                             case 500:
