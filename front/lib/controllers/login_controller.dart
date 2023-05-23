@@ -16,37 +16,6 @@ class LoginController extends GetxController {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> loginRequest() async {
-    final response = await http.post(Uri.parse('http://localhost:8081/login'),
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: json.encode({
-          "number": emailController.text,
-          "password": passwordController.text
-        }));
-        //.then((http.Response response) async {
-      switch(response.statusCode){
-        case 200:
-          //final prefs = await SharedPreferences.getInstance();
-          //prefs.setInt('id', );
-          GlobalValues.user = userFromJson(response.body);
-          Get.rootDelegate.toNamed(Routes.profile);
-          break;
-        case 500:
-          debugPrint('Проблема с подключением к базе данных');
-          break;
-        case 501:
-          debugPrint('Пароль не верный');
-          break;
-        case 502:
-          debugPrint('Пользователь не найден');
-          break;
-        default:
-          debugPrint('');
-          break;
-      }
-    }
-/*
     var url = 'http://localhost:8081/login';
 
     await http
@@ -58,13 +27,12 @@ class LoginController extends GetxController {
           "number": emailController.text,
           "password": passwordController.text
         }))
-        .then((http.Response response) async {
+        .then((http.Response response) {
           int sCode = response.statusCode;
       debugPrint("Response status: ${sCode}");
       debugPrint("Response body: ${response.contentLength}");
       switch(response.statusCode){
         case 200:
-          final prefs = await SharedPreferences.getInstance();
           GlobalValues.user = userFromJson(response.body);
           Get.rootDelegate.toNamed(Routes.profile);
           break;
@@ -82,7 +50,7 @@ class LoginController extends GetxController {
           break;
       }
     });
-  }*/
+  }
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};

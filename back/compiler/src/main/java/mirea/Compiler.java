@@ -104,7 +104,7 @@ public class Compiler {
                 builder = new ProcessBuilder(
                         "cmd.exe",
                         "/c",
-                        "cd " + path + " && py Main.py"
+                        "cd " + path + " && python Main.py"
                 );
                 builder.redirectErrorStream(true);
                 return builder;

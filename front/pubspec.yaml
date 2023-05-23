@@ -27,6 +27,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   code_text_field: ^1.1.0
   animated_theme_switcher: ^2.0.8
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

@@ -1,19 +1,60 @@
+import 'dart:html' as html;
+
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> languages = <String>['Java', 'C++', 'C', 'Python'];
 const List<double> fonts = <double>[10, 12, 14, 16, 18, 20];
 
 class LanguageDropdownButton extends StatefulWidget {
   final VoidCallback update;
-  const LanguageDropdownButton({Key? key,required this.update}): super(key: key);
+
+  const LanguageDropdownButton({Key? key, required this.update})
+      : super(key: key);
 
   @override
   State<LanguageDropdownButton> createState() => _LanguageDropdownButtonState();
 }
 
 class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
-  String dropdownValue = languages.first;
+  @override
+  void initState() {
+    super.initState();
+
+    html.window.onBeforeUnload.listen((html.Event e) {
+      setState(() {
+        setString(dropdownValue);
+        dropdownValue = GlobalValues.language;
+      });
+      // код для обработки нажатия кнопки перезагрузки страницы
+      // например, можно вызвать функцию, которая сохраняет данные перед перезагрузкой
+    });
+    setState(() {
+      getString();
+      dropdownValue = GlobalValues.language;
+    });
+  }
+
+  String dropdownValue = GlobalValues.language;
+
+  Future<void> getString() async {
+    final prefs = await SharedPreferences.getInstance();
+    dropdownValue = prefs.getString('language') ?? languages.first;
+    GlobalValues.language = dropdownValue;
+    debugPrint(dropdownValue);
+
+  }
+
+  Future setString(String str) async {
+    debugPrint(str);
+    final prefs = await SharedPreferences.getInstance();
+    GlobalValues.language = str;
+    dropdownValue = str;
+    return prefs.setString('language', str);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -27,31 +68,30 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
         onChanged: (String? value) {
           setState(() {
             GlobalValues.language = value!;
-            switch(GlobalValues.language){
+            setString(value);
+            switch (GlobalValues.language) {
               case "C++":
-                GlobalValues.code =
-                    "#include <iostream>\n"
+                GlobalValues.code = "#include <iostream>\n"
                     "\n"
                     "using namespace std;\n"
                     "int main(void) {\n"
-                    "  cout << \"Hello world\" <<end;\n"
+                    "  cout << \"Hello world\" <<endl;\n"
                     "}\n";
                 break;
               case "Java":
-                GlobalValues.code ="public class Main {\n  public static void main (String[] args) {\n    System.out.println(\"Hello, World\");\n  }\n}";
+                GlobalValues.code =
+                    "public class Main {\n  public static void main (String[] args) {\n    System.out.println(\"Hello, World\");\n  }\n}";
                 break;
               case "C":
-                GlobalValues.code =
-                    "#include <stdio.h>\n"
+                GlobalValues.code = "#include <stdio.h>\n"
                     "\n"
                     "int main(void) {\n"
                     "  printf(\"Hello world\");\n"
                     "}\n";
                 break;
               case "Python":
-                GlobalValues.code =
-                    "print(\"Hello, World!\")";
-              break;
+                GlobalValues.code = "print(\"Hello, World!\")";
+                break;
             }
             debugPrint(GlobalValues.language);
             debugPrint(GlobalValues.code);
@@ -72,6 +112,7 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
 
 class FontDropdownButton extends StatefulWidget {
   final VoidCallback update;
+
   const FontDropdownButton({Key? key, required this.update}) : super(key: key);
 
   @override
@@ -80,6 +121,7 @@ class FontDropdownButton extends StatefulWidget {
 
 class _FontDropdownButtonState extends State<FontDropdownButton> {
   var dropdownValue = fonts[2];
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonHideUnderline(

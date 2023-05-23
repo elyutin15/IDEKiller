@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
-//import 'package:idekiller/utils/GlobalValues.dart';
+import 'package:idekiller/utils/GlobalValues.dart';
 import 'package:idekiller/screens/auth/widgets/appbarWidget.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 import 'package:idekiller/screens/auth/widgets/numberWidget.dart';
@@ -18,22 +18,21 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late Future<User> _user;
+  //late Future<User> _user;
   late User user;
-  //late User user;
 
   @override
   void initState() {
   super.initState();
-    _user = getUserData(2 );
-    //getUserData(1);
+    //_user = getUserData(1);
+    getUserData(1);
   }
 
-  Future<User> getUserData(int userId) async {
+  Future<void> getUserData(int userId) async {
     final response = await http.get(Uri.parse('http://localhost:8081/profile/$userId'));
     if (response.statusCode == 200) {
-      //final userData = json.decode(response.body);
-      return userFromJson(response.body);
+      final userData = json.decode(response.body);
+      user = userFromJson(response.body);
     } else {
       throw Exception('Failed to load user data');
     }
@@ -43,39 +42,25 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
       return Scaffold(
         appBar: buildAppBar(context),
-        body:
-        FutureBuilder<User>(
-          future: _user,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                user = snapshot.data!;
-                return ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    ProfileWidget(
-                      imagePath: user.profilePic,
-                      onClicked: () {
-                        Get.rootDelegate.toNamed(Routes.editProfile);
-                      },
-                    ),
+        body: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            ProfileWidget(
+              imagePath: GlobalValues.user.profilePic,
+              onClicked: () {
+                Get.rootDelegate.toNamed(Routes.editProfile);
+              },
+            ),
 
-                    const SizedBox(height: 24),
-                    buildName(),
-                    const SizedBox(height: 24),
-                    Center(child: buildUpgradeButton()),
-                    const SizedBox(height: 24),
-                    NumbersWidget(),
-                    const SizedBox(height: 48),
-                    buildAbout(),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return Center(child: Text('${snapshot.error}'));
-              }
-            }
-            return Center(child: CircularProgressIndicator());
-          },
+            const SizedBox(height: 24),
+            buildName(),
+            const SizedBox(height: 24),
+            Center(child: buildUpgradeButton()),
+            const SizedBox(height: 24),
+            NumbersWidget(),
+            const SizedBox(height: 48),
+            buildAbout(),
+          ],
         ),
       );
 
@@ -85,12 +70,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget buildName() => Column(
     children: [
       Text(
-        user.name,
+        GlobalValues.user.name,
         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
       ),
       const SizedBox(height: 4),
       Text(
-        user.number,
+        GlobalValues.user.number,
         style: const TextStyle(color: Colors.grey),
       )
     ],
@@ -113,11 +98,10 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         const SizedBox(height: 16),
         Text(
-          user.about,
+          GlobalValues.user.about,
           style: const TextStyle(fontSize: 16, height: 1.4),
         ),
       ],
     ),
   );
 }
-
