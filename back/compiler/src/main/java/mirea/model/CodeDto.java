@@ -1,6 +1,7 @@
 package mirea.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class CodeDto {
     @Embedded
     Code code;
 
+    @JsonIgnore
     Long userid;
 
     String name;
