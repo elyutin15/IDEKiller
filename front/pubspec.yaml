@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   process_run: any
+  file_picker: ^5.3.0
   url_strategy: ^0.2.0
   http: ^0.13.5
   cupertino_icons: ^1.0.2
@@ -26,6 +27,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   code_text_field: ^1.1.0
   animated_theme_switcher: ^2.0.8
+  url_launcher: ^6.1.10
 
 dev_dependencies:
   flutter_test:

@@ -54,7 +54,7 @@ class User {
     "number": number,
     "students": students,//List<dynamic>.from(students.map((x) => x.toJson()))
     "teachers": teachers,//List<dynamic>.from(teachers.map((x) => x.toJson())),
-    "password": "s",
+    //"password": "s",
     "id": id,
     "about": about,
   };
@@ -62,17 +62,36 @@ class User {
 
 class UserID {
   int id;
+  String name;
 
   UserID({
     required this.id,
+    required this.name,
   });
 
   factory UserID.fromJson(Map<String, dynamic> json) => UserID(
     id: json["id"],
+    name: json["name"],
   );
 
   Map<String, dynamic> toJson() => {
     'id': id,
+    'name': name,
   };
+}
+
+class FriendRequest{
+  int idFrom;
+  int idTo;
+
+  FriendRequest({
+    required this.idFrom,
+    required this.idTo,
+  });
+
+  factory FriendRequest.fromJson(Map<String, dynamic> json) => FriendRequest(
+      idFrom: json['idFrom'],
+      idTo: json['idTo'],
+  );
 }
 

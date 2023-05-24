@@ -4,6 +4,7 @@ import 'package:idekiller/screens/compiler.dart';
 import 'package:idekiller/screens/userProfile.dart';
 import 'package:idekiller/utils/routes.dart';
 import 'package:idekiller/screens/editUser.dart';
+import 'package:idekiller/screens/glists.dart';
 
 abstract class AppPages {
   static final pages = [
@@ -22,6 +23,10 @@ abstract class AppPages {
     GetPage(
       name: Routes.editProfile,
       page: () => EditProfilePage(),
+    ),
+    GetPage(
+      name: Routes.lists,
+      page: () => TabsScreen(),
     ),
   ];
 }
