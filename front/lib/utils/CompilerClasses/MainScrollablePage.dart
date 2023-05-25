@@ -9,8 +9,9 @@ import 'package:idekiller/utils/CompilerClasses/RunText.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 import 'package:idekiller/utils/CompilerClasses/TextBox.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
-
+import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class MainScrollablePage extends StatefulWidget {
   const MainScrollablePage({Key? key}) : super(key: key);
@@ -33,7 +34,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
     },
     text: GlobalValues.code,
   );
-
+  late Timer timer;
   late var isButtonDisabled = false;
   bool _load = false;
 
@@ -45,6 +46,9 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   void initState() {
     super.initState();
 
+    timer = Timer.periodic(
+        Duration(milliseconds: 100), (Timer t) => getOutput(outputController));
+
     window.onBeforeUnload.listen((Event e) {
       setString(codeController.text);
       // код для обработки нажатия кнопки перезагрузки страницы
@@ -52,6 +56,12 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
     });
 
     getString();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   Future<void> getString() async {
@@ -111,8 +121,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                         });
 
                         GlobalValues.code = codeController.text;
-                        sendRequest(codeController.value.text,
-                            inputController.value.text, outputController);
+                        sendRequest(codeController.value.text, outputController);
                       },
                       style: ButtonStyle(
                         overlayColor: MaterialStateProperty.resolveWith<Color>(
@@ -186,23 +195,37 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   }
 
   Future<void> sendRequest(
-      String code, String input, TextEditingController outputController) async {
+      String code, TextEditingController outputController) async {
     outputController.text = "";
     isButtonDisabled = true;
+    GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080';
     await http
         .post(Uri.parse(url),
             headers: {
               "Content-Type": "application/json",
+              "uuid": GlobalValues.uuid
             },
             body: json.encode({
               "code": {
                 "code": code,
                 "language": GlobalValues.language.toLowerCase()
               },
-              "input": {"words": input}
+              "input": {"words": ""}
             }))
         .then((http.Response response) {
+      outputController.text = "";
+    });
+  }
+
+  Future<void> getOutput(TextEditingController outputController) async {
+    outputController.text = "";
+    GlobalValues.uuid = Uuid().v4();
+    var url = 'http://localhost:8080/output';
+    await http.get(Uri.parse(url), headers: {
+      "Content-Type": "application/json",
+      "uuid": GlobalValues.uuid
+    }).then((http.Response response) {
       debugPrint("Response status: ${response.statusCode}");
       debugPrint("Response body: ${response.contentLength}");
       debugPrint(response.body);

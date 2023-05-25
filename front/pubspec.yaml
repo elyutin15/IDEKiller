@@ -28,6 +28,7 @@ dependencies:
   code_text_field: ^1.1.0
   animated_theme_switcher: ^2.0.8
   url_launcher: ^6.1.10
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
