@@ -71,7 +71,7 @@ public class CompilerController {
     }
 
     @Operation(
-            summary = "Дозапись инпута для компиляции по uuid"
+            summary = "Чтение инпута для компиляции по uuid"
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "500", description = "Произошла ошибка"),
