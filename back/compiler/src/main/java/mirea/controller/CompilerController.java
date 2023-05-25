@@ -8,6 +8,7 @@ import mirea.Compiler;
 import mirea.data.CodeRepository;
 import mirea.model.CodeDto;
 import mirea.model.CompilationRequest;
+import mirea.model.Input;
 import mirea.model.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Tag(name="Контроллер компилятора и смежных функцийз")
 @RestController
@@ -41,16 +43,30 @@ public class CompilerController {
     @CrossOrigin(origins = {"${frontend.url}"})
     @ResponseBody
     @PostMapping("/")
-    public Output compileCode(@RequestBody CompilationRequest compilationRequest) {
-        log.info("Requested compilation: {}", compilationRequest);
+    public Output compileCode(@RequestBody CompilationRequest compilationRequest, @RequestHeader("uuid") UUID uuid) {
+        log.info("Requested compilation: {}, with uuid {}", compilationRequest, uuid);
         try {
-            Output out = compiler.compile(compilationRequest);
+            Output out = compiler.compile(compilationRequest, uuid);
             log.info("Outputted code: {}", out.getOutput());
             return out;
         } catch (Exception e) {
-            log.error(e.toString());
+            e.printStackTrace();
             throw new HttpServerErrorException(HttpStatusCode.valueOf(500));
         }
+    }
+
+    @Operation(
+            summary = "Дозапись инпута для компиляции по uuid"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка"),
+            @ApiResponse(responseCode = "200", description = "Успешно дозаписано")
+    })
+    @CrossOrigin(origins = {"${frontend.url}"})
+    @PostMapping("/append")
+    public void appendInput(@RequestBody Input input, @RequestHeader UUID uuid) throws InterruptedException {
+        log.info("requested append for uuid {}, input {}", uuid, input);
+        compiler.appendInput(input, uuid, 0);
     }
 
     @Operation(

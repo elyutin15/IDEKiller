@@ -1,9 +1,6 @@
 package mirea;
 
-import mirea.model.Code;
-import mirea.model.CompilationRequest;
-import mirea.model.Language;
-import mirea.model.Output;
+import mirea.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +13,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class Compiler {
@@ -34,8 +33,8 @@ public class Compiler {
             }
         }
     }
-    public Output compile(CompilationRequest compilationRequest) throws IOException, InterruptedException {
-        String path = writeCode(compilationRequest.getCode());
+    public Output compile(CompilationRequest compilationRequest, UUID uuid) throws IOException, InterruptedException {
+        String path = writeCode(compilationRequest.getCode(), uuid);
 
         ProcessBuilder builder = getProcessBuilder(compilationRequest.getCode().getLanguage(), path);
         if (builder == null) {
@@ -114,6 +113,20 @@ public class Compiler {
 
     }
 
+    public void appendInput(Input input, UUID uuid, int attempt) throws InterruptedException {
+        if (attempt == 5) {
+            return;
+        }
+        try {
+            String path = utilPath + "//" + uuid.toString() + "//in.txt";
+            Files.write(Path.of(path), input.getWords().getBytes(), StandardOpenOption.APPEND);
+        } catch (Exception e) {
+            e.printStackTrace();
+            TimeUnit.MILLISECONDS.sleep(100);
+            appendInput(input, uuid, attempt+1);
+        }
+    }
+
     private void readProcessOutput(BufferedReader processReader, Path outFile) throws IOException {
         while (processReader.ready()) {
             String line = processReader.readLine();
@@ -124,14 +137,9 @@ public class Compiler {
         }
     }
 
-    private String writeCode(Code code) {
-        String format = utilPath + "//%d";
-        int num = 0;
-        while (Files.exists(Path.of(String.format(format, num)))) {
-            num++;
-        }
+    private String writeCode(Code code, UUID uuid) {
+        String path = utilPath + "//" + uuid.toString();
         try {
-            String path = String.format(format, num);
             Files.createDirectory(Path.of(path));
             Files.createFile(Path.of(path+"//Main" + code.getLanguage().end));
             Files.createFile(Path.of(path+"//in.txt"));
