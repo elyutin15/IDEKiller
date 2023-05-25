@@ -127,6 +127,18 @@ public class Compiler {
         }
     }
 
+    public String readOutput(UUID uuid) throws IOException {
+        String path = utilPath + "//" + uuid.toString() + "//out.txt";
+        final StringBuilder result = new StringBuilder();
+        Files.readAllLines(Path.of(path)).forEach(i->result.append(i).append("\n"));
+        if (result.length() != 0) {
+            result.deleteCharAt(result.length() - 1);
+        }
+        return result.toString();
+
+
+    }
+
     private void readProcessOutput(BufferedReader processReader, Path outFile) throws IOException {
         while (processReader.ready()) {
             String line = processReader.readLine();

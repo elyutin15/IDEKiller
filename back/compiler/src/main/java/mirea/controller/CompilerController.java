@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,6 +68,20 @@ public class CompilerController {
     public void appendInput(@RequestBody Input input, @RequestHeader UUID uuid) throws InterruptedException {
         log.info("requested append for uuid {}, input {}", uuid, input);
         compiler.appendInput(input, uuid, 0);
+    }
+
+    @Operation(
+            summary = "Дозапись инпута для компиляции по uuid"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Произошла ошибка"),
+            @ApiResponse(responseCode = "200", description = "Успешно прочитано")
+    })
+    @CrossOrigin(origins = {"${frontend.url}"})
+    @GetMapping("/output")
+    public Output readOutput(@RequestHeader UUID uuid) throws IOException {
+        log.info("requested read for uuid {}", uuid);
+        return new Output(compiler.readOutput(uuid));
     }
 
     @Operation(
