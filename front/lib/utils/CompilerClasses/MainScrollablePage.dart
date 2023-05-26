@@ -37,6 +37,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   late Timer timer;
   late var isButtonDisabled = false;
   bool _load = false;
+  bool _stop = false;
 
   void func() {
     setState(() {});
@@ -122,6 +123,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                             codeController.value.text, outputController);
                       },
                       style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade400), //tex
                         overlayColor: MaterialStateProperty.resolveWith<Color>(
                           (Set<MaterialState> states) {
                             if (states.contains(MaterialState.pressed)) {
@@ -166,7 +168,36 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                     children: [
                       const OutputTitle(),
                       const SizedBox(
-                        width: 20,
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (!isButtonDisabled) {
+                            return;
+                          }
+                          setState(() {
+                            _load = false;
+                            isButtonDisabled = false;
+                            timer.cancel();
+                            _stop = true;
+                          });
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade400), //text (and icon)
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                return Colors.grey.withOpacity(0.8);
+                              }
+                              return Colors.transparent;
+                            },
+                          ),
+                        ),
+                        child: const Stop(),
+                      ),
+                      const SizedBox(
+                        width: 10,
                       ),
                       LoadingAnimation(
                         load: _load,
@@ -196,6 +227,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
       String code, TextEditingController outputController) async {
     outputController.text = "";
     isButtonDisabled = true;
+    _stop =false;
     GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080';
     timer = Timer.periodic(
@@ -214,6 +246,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
               "input": {"words": ""}
             }))
         .then((http.Response response) {
+      if (_stop == true) return;
       timer.cancel();
       var output = json.decode(response.body);
       outputController.text = output["output"];

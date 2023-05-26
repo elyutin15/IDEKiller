@@ -14,3 +14,18 @@ class RunText extends StatelessWidget {
     );
   }
 }
+
+class Stop extends StatelessWidget {
+  const Stop({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      "Stop",
+      style: TextStyle(
+        fontSize: 14,
+        color: Colors.black,
+      ),
+    );
+  }
+}
