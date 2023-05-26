@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  compiler:
+    build: ./compiler
+    ports:
+      - "8080:8080"
+    networks:
+      - web
+
+  auth:
+    build: ./auth
+    ports:
+      - "8081:8081"
+    networks:
+      - web
+networks:
+  web:
+    driver: bridge
