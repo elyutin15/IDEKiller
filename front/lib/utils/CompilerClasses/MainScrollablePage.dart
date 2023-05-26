@@ -26,7 +26,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   final codeController = CodeController(
     patternMap: {
       r'".*"': const TextStyle(color: Colors.yellow),
-      r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.green),
+      r'[ ][a-zA-Z0-9]+?\(': const TextStyle(color: Colors.green),
     },
     stringMap: {
       "void": const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
@@ -45,9 +45,6 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   @override
   void initState() {
     super.initState();
-
-    timer = Timer.periodic(
-        Duration(milliseconds: 100), (Timer t) => getOutput(outputController));
 
     window.onBeforeUnload.listen((Event e) {
       setString(codeController.text);
@@ -121,7 +118,8 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                         });
 
                         GlobalValues.code = codeController.text;
-                        sendRequest(codeController.value.text, outputController);
+                        sendRequest(
+                            codeController.value.text, outputController);
                       },
                       style: ButtonStyle(
                         overlayColor: MaterialStateProperty.resolveWith<Color>(
@@ -200,6 +198,8 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
     isButtonDisabled = true;
     GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080';
+    timer = Timer.periodic(
+        Duration(milliseconds: 100), (Timer t) => getOutput(outputController));
     await http
         .post(Uri.parse(url),
             headers: {
@@ -214,13 +214,18 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
               "input": {"words": ""}
             }))
         .then((http.Response response) {
-      outputController.text = "";
+      timer.cancel();
+      var output = json.decode(response.body);
+      outputController.text = output["output"];
+      debugPrint("gfugfdg" + outputController.text);
+      setState(() {
+        _load = false;
+      });
+      isButtonDisabled = false;
     });
   }
 
   Future<void> getOutput(TextEditingController outputController) async {
-    outputController.text = "";
-    GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080/output';
     await http.get(Uri.parse(url), headers: {
       "Content-Type": "application/json",
@@ -230,11 +235,9 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
       debugPrint("Response body: ${response.contentLength}");
       debugPrint(response.body);
       var output = json.decode(response.body);
-      outputController.text = output["output"];
-      isButtonDisabled = false;
-      setState(() {
-        _load = false;
-      });
+      if (outputController.text != output["output"]) {
+        outputController.text = output["output"];
+      }
     });
   }
 }
