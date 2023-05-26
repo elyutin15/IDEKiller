@@ -26,7 +26,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   final codeController = CodeController(
     patternMap: {
       r'".*"': const TextStyle(color: Colors.yellow),
-      r'[a-zA-Z0-9]+\(.*\)': const TextStyle(color: Colors.green),
+      r'[ ][a-zA-Z0-9]+?\(': const TextStyle(color: Colors.green),
     },
     stringMap: {
       "void": const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
@@ -37,6 +37,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   late Timer timer;
   late var isButtonDisabled = false;
   bool _load = false;
+  bool _stop = false;
 
   void func() {
     setState(() {});
@@ -45,9 +46,6 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
   @override
   void initState() {
     super.initState();
-
-    timer = Timer.periodic(
-        Duration(milliseconds: 100), (Timer t) => getOutput(outputController));
 
     window.onBeforeUnload.listen((Event e) {
       setString(codeController.text);
@@ -121,9 +119,11 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                         });
 
                         GlobalValues.code = codeController.text;
-                        sendRequest(codeController.value.text, outputController);
+                        sendRequest(
+                            codeController.value.text, outputController);
                       },
                       style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade400), //tex
                         overlayColor: MaterialStateProperty.resolveWith<Color>(
                           (Set<MaterialState> states) {
                             if (states.contains(MaterialState.pressed)) {
@@ -168,7 +168,36 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                     children: [
                       const OutputTitle(),
                       const SizedBox(
-                        width: 20,
+                        width: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (!isButtonDisabled) {
+                            return;
+                          }
+                          setState(() {
+                            _load = false;
+                            isButtonDisabled = false;
+                            timer.cancel();
+                            _stop = true;
+                          });
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade400), //text (and icon)
+                          overlayColor:
+                              MaterialStateProperty.resolveWith<Color>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                return Colors.grey.withOpacity(0.8);
+                              }
+                              return Colors.transparent;
+                            },
+                          ),
+                        ),
+                        child: const Stop(),
+                      ),
+                      const SizedBox(
+                        width: 10,
                       ),
                       LoadingAnimation(
                         load: _load,
@@ -198,8 +227,11 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
       String code, TextEditingController outputController) async {
     outputController.text = "";
     isButtonDisabled = true;
+    _stop =false;
     GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080';
+    timer = Timer.periodic(
+        Duration(milliseconds: 100), (Timer t) => getOutput(outputController));
     await http
         .post(Uri.parse(url),
             headers: {
@@ -214,13 +246,19 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
               "input": {"words": ""}
             }))
         .then((http.Response response) {
-      outputController.text = "";
+      if (_stop == true) return;
+      timer.cancel();
+      var output = json.decode(response.body);
+      outputController.text = output["output"];
+      debugPrint("gfugfdg" + outputController.text);
+      setState(() {
+        _load = false;
+      });
+      isButtonDisabled = false;
     });
   }
 
   Future<void> getOutput(TextEditingController outputController) async {
-    outputController.text = "";
-    GlobalValues.uuid = Uuid().v4();
     var url = 'http://localhost:8080/output';
     await http.get(Uri.parse(url), headers: {
       "Content-Type": "application/json",
@@ -230,11 +268,9 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
       debugPrint("Response body: ${response.contentLength}");
       debugPrint(response.body);
       var output = json.decode(response.body);
-      outputController.text = output["output"];
-      isButtonDisabled = false;
-      setState(() {
-        _load = false;
-      });
+      if (outputController.text != output["output"]) {
+        outputController.text = output["output"];
+      }
     });
   }
 }
