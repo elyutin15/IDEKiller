@@ -1,7 +1,11 @@
-import 'dart:typed_data';
 
+
+
+
+import 'dart:convert';
+import 'dart:html';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 
 class TabsScreen extends StatefulWidget {
   @override
@@ -9,35 +13,169 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  Uint8List? _imageBytes;
+  String _imageUrl = '';
 
-  void _pickImage() async {
-    final result = await FilePicker.platform.pickFiles(type: FileType.image);
-    if (result != null) {
-      setState(() {
-        _imageBytes = result.files.single.bytes;
-      });
-    }
+  Future<void> _getImage() async {
+    final input = FileUploadInputElement();
+    input.accept = 'image/*';
+    input.click();
+
+    await input.onChange.first;
+    final file = input.files!.first;
+    final reader = FileReader();
+
+    reader.readAsDataUrl(file);
+
+    await reader.onLoad.first;
+    final encoded = reader.result as String;
+
+    setState(() {
+      _imageUrl = encoded;
+    });
+
+
   }
-
+  //List<>
+  //final User currentUser = // получение данных текущего пользователя из базы данных
+  final TextEditingController searchTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Выберите фотографию'),
-      ),
-      body: GestureDetector(
-        onTap: _pickImage,
-        child: Center(
-          child: _imageBytes != null
-              ? Image.memory(_imageBytes!)
-              : Icon(Icons.add_a_photo, size: 64),
+        title: TextField(
+          controller: searchTextController,
+          decoration: InputDecoration(
+            hintText: 'Введите поисковый запрос',
+            border: InputBorder.none,
+          ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              final query = searchTextController.text;
+              // Обработка запроса поиска
+            },
+          ),
+        ],
+      ),
+      body: Container(),
+    );
+  }
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Мой профиль')),
+      body: Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Мой профиль',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  SizedBox(height: 16),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: NetworkImage('https://picsum.photos/250?image=9'),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'currentUser.name',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 16),
+                  Text(
+                    'currentUser.email',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Редактирование профиля
+                    },
+                    child: Text('Редактировать профиль'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'Мои друзья',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: 55,
+                      itemBuilder: (context, index) {
+                        //final friend = currentUser.friends[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundImage: NetworkImage('https://picsum.photos/250?image=9'),
+                          ),
+                          title: Text('maks'),
+                          subtitle: Text('123@123.3'),
+                          trailing: Icon(Icons.arrow_forward),
+                          onTap: () {
+                            // Переход к профилю друга
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
+  */
+  /*
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+       GestureDetector(
+         onTap: _getImage,
+         child: CircleAvatar(
+           radius: 100.0,
+           backgroundImage: _imageUrl.isNotEmpty
+               ? Image.memory(
+             _decodeBase64(_imageUrl.split(',').last),
+             fit: BoxFit.cover,
+           ).image
+               : AssetImage('assets/images/profile_default.png'),
+         ),
+       ),
+      ],
+    );
+  }*/
+
+  Uint8List _decodeBase64(String input) {
+    final bytes = base64.decode(input);
+    return bytes;
+  }
 }
+
+
+
 
 
 

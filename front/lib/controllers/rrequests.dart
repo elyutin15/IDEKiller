@@ -12,6 +12,17 @@ class MyApiClient {
       throw Exception('Failed to load user data');
     }
   }
+  static Future<int> addSubscriber(int idFrom, int idTo) async {
+    final response = await http.post(Uri.parse('http://localhost:8081/subscriber/add'), body: json.encode({
+      "idFrom": idFrom,
+      "idTo": idTo
+    }));
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load user data');
+    }
+  }
 
   static Future<List<FriendRequest>> getFriendRequests(int id) async {
     var response = await http.get(Uri.parse('http://localhost:8081/subscriber/$id'));
@@ -24,15 +35,15 @@ class MyApiClient {
   }
 
   static Future<int> addFriend(int idFrom, int idTo) async {
-    final response = await http.post(Uri.parse('http://localhost:8081/subscribe/add'), body: json.encode({
+    final response = await http.post(Uri.parse('http://localhost:8081/subscriber/add'), body: json.encode({
       "idFrom": idFrom,
       "idTo": idTo
-    }));
+    }), headers: {'Content-Type': 'application/json'});
     return response.statusCode;
   }
 
   static Future<int> acceptFriend(int idFrom, int idTo) async {
-    final response = await http.post(Uri.parse('http://localhost:8081/subscribe/accept'), body: json.encode({
+    final response = await http.post(Uri.parse('http://localhost:8081/subscriber/accept'), body: json.encode({
       "idFrom": idFrom,
       "idTo": idTo
     }));

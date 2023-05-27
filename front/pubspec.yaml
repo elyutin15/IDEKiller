@@ -18,6 +18,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   shared_preferences: ^2.1.0
+  image_picker_web: ^3.0.0+1
   path_icon: ^0.7.2
   window_size:
     git:

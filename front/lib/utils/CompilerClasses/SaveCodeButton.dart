@@ -13,7 +13,7 @@ class SaveCodeButton extends StatelessWidget {
       padding: const EdgeInsets.only(right: 20),
       child: IconButton(
         icon: const Icon(
-          Icons.accessible_forward,
+          Icons.save,
           color: Colors.white,
         ),
         onPressed: () {
