@@ -87,7 +87,7 @@ public class SubscriberController {
         try {
             final List<AddUser> subscribers = addUserRepo.findAllByIdTo(id);
             final List<UserId> userIds = subscribers.stream()
-                    .map(i -> userIdRepo.findById(i.getIdTo()).orElse(null))
+                    .map(i -> userIdRepo.findById(i.getIdFrom()).orElse(null))
                     .filter(Objects::nonNull)
                     .toList();
             return new ResponseEntity<>(userIds, HttpStatus.OK);
