@@ -74,35 +74,36 @@ public class Compiler {
     private ProcessBuilder getProcessBuilder(Language language, String path) throws IOException, InterruptedException {
 
         ProcessBuilder builder;
+        log.info("test123");
         switch (language) {
             case JAVA:
                 builder = new ProcessBuilder(
-                        "cmd.exe",
-                        "/c",
+                        "/bin/bash",
+                        "-c",
                         "cd " + path + " && javac Main.java && java Main"
                 );
                 builder.redirectErrorStream(true);
                 return builder;
             case CPLUSPLUS:
                 builder = new ProcessBuilder(
-                        "cmd.exe",
-                        "/c",
-                        "cd " + path + " && g++ -Wall -o Main Main.cpp && Main.exe"
+                        "/bin/bash",
+                        "-c",
+                        "cd " + path + " && g++ -Wall -o Main Main.cpp && ./Main"
                 );
                 builder.redirectErrorStream(true);
                 return builder;
             case C:
                 builder = new ProcessBuilder(
-                        "cmd.exe",
-                        "/c",
-                        "cd " + path + " && gcc -Wall -o Main Main.c && Main.exe"
+                        "/bin/bash",
+                        "-c",
+                        "cd " + path + " && gcc -Wall -o Main Main.c && ./Main"
                 );
                 builder.redirectErrorStream(true);
                 return builder;
             case PYTHON:
                 builder = new ProcessBuilder(
-                        "cmd.exe",
-                        "/c",
+                        "/bin/bash",
+                        "-c",
                         "cd " + path + " && python Main.py"
                 );
                 builder.redirectErrorStream(true);
