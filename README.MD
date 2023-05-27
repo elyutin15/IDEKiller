@@ -3,8 +3,8 @@
 gradle auth:build
 gradle compiler:build
 
-gradle auth:bootRun
-gradle compiler:bootRun
+docker compose build
+docker compose up
 ```
 
 OpenApi - localhost:port/swagger-ui.html
