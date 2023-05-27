@@ -41,6 +41,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Future<User> _user;
+  //late Future<List<Code>>
   late User user;
   final TextEditingController searchTextController = TextEditingController();
   //late User user;
@@ -52,7 +53,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _user = getUserData(2 );
+    _user = MyApiClient.getUserData(2);
+    //_codesList = MyApiClient.getFriendRequests(1);
     //getUserData(1);
   }
 

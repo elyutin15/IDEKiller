@@ -15,6 +15,8 @@
 // }
 import 'dart:convert';
 
+import 'package:idekiller/utils/CompilerClasses/DropdownButton.dart';
+
 User userFromJson(String str) => User.fromJson(json.decode(str));
 
 String userToJson(User data) => json.encode(data.toJson());
@@ -95,3 +97,38 @@ class FriendRequest{
   );
 }
 
+class CodeStruct{
+  int id;
+  String name;
+  Code code;
+
+  CodeStruct({
+    required this.id,
+    required this.name,
+    required this.code,
+});
+  factory CodeStruct.fromJson(Map<String, dynamic> json) => CodeStruct(
+    code: json['code'],
+    id: json['id'],
+    name: json['name'],
+  );
+}
+class Code {
+  String code;
+  String language;
+
+  Code({
+    required this.code,
+    required this.language,
+  });
+
+  factory Code.fromJson(Map<String, dynamic> json) => Code(
+    code: json["code"],
+    language: json["language"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    'code': code,
+    'language': language,
+  };
+}
