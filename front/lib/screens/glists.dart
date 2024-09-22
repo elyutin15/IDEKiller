@@ -1,15 +1,13 @@
-
-
-
-
 import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 
 class TabsScreen extends StatefulWidget {
+  const TabsScreen({super.key});
+
   @override
-  _TabsScreenState createState() => _TabsScreenState();
+  State<TabsScreen> createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
@@ -45,14 +43,14 @@ class _TabsScreenState extends State<TabsScreen> {
       appBar: AppBar(
         title: TextField(
           controller: searchTextController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: 'Введите поисковый запрос',
             border: InputBorder.none,
           ),
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             onPressed: () {
               final query = searchTextController.text;
               // Обработка запроса поиска

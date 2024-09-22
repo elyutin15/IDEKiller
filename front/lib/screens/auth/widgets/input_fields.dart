@@ -3,22 +3,25 @@ import 'package:flutter/material.dart';
 class InputTextFieldWidget extends StatelessWidget {
   final TextEditingController textEditingController;
   final String hintText;
-  InputTextFieldWidget(this.textEditingController, this.hintText);
+
+  const InputTextFieldWidget(this.textEditingController, this.hintText,
+      {super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 46,
       child: TextField(
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
         controller: textEditingController,
         decoration: InputDecoration(
             alignLabelWithHint: true,
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.white)),
             fillColor: Colors.white70,
             hintText: hintText,
-            hintStyle: TextStyle(color: Colors.grey),
-            contentPadding: EdgeInsets.only(bottom: 15),
+            hintStyle: const TextStyle(color: Colors.grey),
+            contentPadding: const EdgeInsets.only(bottom: 15),
             focusColor: Colors.white60),
       ),
     );
