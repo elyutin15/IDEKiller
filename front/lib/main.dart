@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/foundation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/transitions_type.dart';

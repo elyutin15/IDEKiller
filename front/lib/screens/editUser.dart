@@ -2,17 +2,13 @@ import 'dart:convert';
 import 'dart:html';
 import 'dart:typed_data';
 
-import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
-import 'auth/widgets/appbarWidget.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
-import 'auth/widgets/profileWidget.dart';
 import 'auth/widgets/textFieldWIdget.dart';
 import 'package:http/http.dart' as http;
 import 'package:idekiller/utils/routes.dart';
-import 'package:idekiller/screens/auth/widgets/input_fields.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 
 class EditProfilePage extends StatefulWidget {

@@ -1,11 +1,6 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:idekiller/controllers/model.dart';
-//import 'package:idekiller/utils/GlobalValues.dart';
-import 'package:idekiller/screens/auth/widgets/appbarWidget.dart';
 import 'package:idekiller/screens/auth/widgets/buttonWidget.dart';
 import 'package:idekiller/screens/auth/widgets/numberWidget.dart';
 import 'package:idekiller/screens/auth/widgets/profileWidget.dart';

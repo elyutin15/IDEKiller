@@ -5,8 +5,9 @@ import 'package:idekiller/utils/CompilerClasses/SaveCodeButton.dart';
 import 'package:idekiller/utils/CompilerClasses/Titles.dart';
 
 class CompilerAppBar extends StatelessWidget {
-  late VoidCallback update;
-  CompilerAppBar({Key? key, required this.update}) : super(key: key);
+  final VoidCallback update;
+
+  const CompilerAppBar({Key? key, required this.update}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

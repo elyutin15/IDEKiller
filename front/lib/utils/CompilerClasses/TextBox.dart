@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:idekiller/utils/GlobalValues.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,9 +24,9 @@ class _TextBoxState extends State<TextBox> {
 
   @override
   Widget build(BuildContext context) {
-    return RawKeyboardListener(
+    return KeyboardListener(
       focusNode: FocusNode(),
-      onKey: (event) {
+      onKeyEvent: (event) {
         widget.textEditingController.selection = TextSelection.fromPosition(
             TextPosition(offset: widget.textEditingController.text.length));
       },

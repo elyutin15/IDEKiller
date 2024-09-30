@@ -1,5 +1,4 @@
 import 'package:idekiller/controllers/model.dart';
-import 'package:uuid/uuid.dart';
 
 class GlobalValues {
   static String language = 'Java';

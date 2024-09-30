@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:html';
 import 'package:code_text_field/code_text_field.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:idekiller/utils/CompilerClasses/LoadingAnimation.dart';
@@ -123,10 +122,10 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                             codeController.value.text, outputController);
                       },
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue.shade400), //tex
-                        overlayColor: MaterialStateProperty.resolveWith<Color>(
-                          (Set<MaterialState> states) {
-                            if (states.contains(MaterialState.pressed)) {
+                        backgroundColor: WidgetStateProperty.all<Color>(Colors.blue.shade400), //tex
+                        overlayColor: WidgetStateProperty.resolveWith<Color>(
+                          (Set<WidgetState> states) {
+                            if (states.contains(WidgetState.pressed)) {
                               return Colors.grey.withOpacity(0.8);
                             }
                             return Colors.transparent;
@@ -183,11 +182,11 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                           });
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.pink.shade400), //text (and icon)
+                          backgroundColor: WidgetStateProperty.all<Color>(Colors.pink.shade400), //text (and icon)
                           overlayColor:
-                              MaterialStateProperty.resolveWith<Color>(
-                            (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.pressed)) {
+                              WidgetStateProperty.resolveWith<Color>(
+                            (Set<WidgetState> states) {
+                              if (states.contains(WidgetState.pressed)) {
                                 return Colors.grey.withOpacity(0.8);
                               }
                               return Colors.transparent;
