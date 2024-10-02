@@ -1,6 +1,6 @@
 sealed class CodeBlocState {
   final String code;
-  final int fontSize;
+  final double fontSize;
 
   CodeBlocState(this.code, this.fontSize);
 }
@@ -8,7 +8,7 @@ sealed class CodeBlocState {
 class CodeBlocStateInitial extends CodeBlocState {
   CodeBlocStateInitial(super.code, super.fontSize);
 
-  CodeBlocStateInitial copyWith({String? code, int? fontSize}) {
+  CodeBlocStateInitial copyWith({String? code, double? fontSize}) {
     return CodeBlocStateInitial(
       code ?? this.code,
       fontSize ?? this.fontSize,

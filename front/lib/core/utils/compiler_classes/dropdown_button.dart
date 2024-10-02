@@ -2,8 +2,8 @@ import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idekiller/features/compiler/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/compiler/presentation/bloc/code_bloc_event.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> languages = <String>['Java', 'C++', 'C', 'Python'];
@@ -58,16 +58,7 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
         onChanged: (String? value) {
           setState(() {
             dropdownValue = value!;
-            switch (dropdownValue) {
-              case "Java":
-                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeJava());
-              case "C++":
-                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeCpp());
-              case "C":
-                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeC());
-              case "Python":
-                context.read<CodeBloc>().add(CodeBlocEventLanguageChangePython());
-            }
+            context.read<CodeBloc>().add(CodeBlocEventLanguageChange(dropdownValue));
           });
         },
         items: languages.map<DropdownMenuItem<String>>((String value) {
@@ -103,6 +94,7 @@ class _FontDropdownButtonState extends State<FontDropdownButton> {
         onChanged: (double? value) {
           setState(() {
             dropdownValue = value!;
+            context.read<CodeBloc>().add(CodeBlocEventFontChange(dropdownValue));
           });
         },
         items: fonts.map<DropdownMenuItem<double>>((double value) {
