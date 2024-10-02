@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/utils/routes.dart';
+import 'package:idekiller/core/utils/routes.dart';
 
 class RegistrationPage extends StatelessWidget {
   const RegistrationPage({super.key});

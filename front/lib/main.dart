@@ -1,4 +1,4 @@
-import 'package:idekiller/internal/application.dart';
+import 'package:idekiller/core/internal/application.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter/material.dart';
 

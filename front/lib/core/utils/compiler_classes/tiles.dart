@@ -37,17 +37,11 @@ class CompilerTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      flex: 4,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-        child: Text(
-          "Online Compiler",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-        ),
+    return Text(
+      "Online Compiler",
+      style: TextStyle(
+        fontSize: 20,
+        color: Colors.white,
       ),
     );
   }

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:idekiller/utils/global_values.dart';
 import 'package:http/http.dart' as http;
 
 class TextBox extends StatefulWidget {
@@ -17,7 +16,7 @@ class TextBox extends StatefulWidget {
 
 class _TextBoxState extends State<TextBox> {
   var style = TextStyle(
-    fontSize: GlobalValues.font,
+    // fontSize: GlobalValues.font,
     color: Colors.white,
   );
 
@@ -40,7 +39,7 @@ class _TextBoxState extends State<TextBox> {
         textInputAction: TextInputAction.done,
         readOnly: !widget.enable,
         style: TextStyle(
-          fontSize: GlobalValues.font,
+          // fontSize: GlobalValues.font,
           color: Colors.white,
         ),
         decoration: const InputDecoration(
@@ -59,7 +58,7 @@ Future<void> sendRequest(String args) async {
       .post(Uri.parse(url),
           headers: {
             "Content-Type": "application/json",
-            "uuid": GlobalValues.uuid
+            // "uuid": GlobalValues.uuid
           },
           body: json.encode({"words": args}))
       .then((http.Response response) {

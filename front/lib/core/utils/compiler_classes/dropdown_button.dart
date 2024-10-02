@@ -1,7 +1,9 @@
 import 'dart:html' as html;
 
 import 'package:flutter/material.dart';
-import 'package:idekiller/utils/global_values.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idekiller/features/compiler/presentation/bloc/code_bloc.dart';
+import 'package:idekiller/features/compiler/presentation/bloc/code_bloc_event.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const List<String> languages = <String>['Java', 'C++', 'C', 'Python'];
@@ -22,28 +24,24 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
     html.window.onBeforeUnload.listen((html.Event e) {
       setState(() {
         setString(dropdownValue);
-        dropdownValue = GlobalValues.language;
       });
     });
     setState(() {
       getString();
-      dropdownValue = GlobalValues.language;
     });
   }
 
-  String dropdownValue = GlobalValues.language;
+  String dropdownValue = "Java";
 
   Future<void> getString() async {
     final prefs = await SharedPreferences.getInstance();
     dropdownValue = prefs.getString('language') ?? languages.first;
-    GlobalValues.language = dropdownValue;
     debugPrint(dropdownValue);
   }
 
   Future setString(String str) async {
     debugPrint(str);
     final prefs = await SharedPreferences.getInstance();
-    GlobalValues.language = str;
     dropdownValue = str;
     return prefs.setString('language', str);
   }
@@ -59,35 +57,17 @@ class _LanguageDropdownButtonState extends State<LanguageDropdownButton> {
         style: const TextStyle(color: Colors.white),
         onChanged: (String? value) {
           setState(() {
-            GlobalValues.language = value!;
-            setString(value);
-            switch (GlobalValues.language) {
-              case "C++":
-                GlobalValues.code = "#include <iostream>\n"
-                    "\n"
-                    "using namespace std;\n"
-                    "int main(void) {\n"
-                    "  cout << \"Hello world\" <<endl;\n"
-                    "}\n";
-                break;
+            dropdownValue = value!;
+            switch (dropdownValue) {
               case "Java":
-                GlobalValues.code =
-                    "public class Main {\n  public static void main (String[] args) {\n    System.out.println(\"Hello, World\");\n  }\n}";
-                break;
+                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeJava());
+              case "C++":
+                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeCpp());
               case "C":
-                GlobalValues.code = "#include <stdio.h>\n"
-                    "\n"
-                    "int main(void) {\n"
-                    "  printf(\"Hello world\");\n"
-                    "}\n";
-                break;
+                context.read<CodeBloc>().add(CodeBlocEventLanguageChangeC());
               case "Python":
-                GlobalValues.code = "print(\"Hello, World!\")";
-                break;
+                context.read<CodeBloc>().add(CodeBlocEventLanguageChangePython());
             }
-            debugPrint(GlobalValues.language);
-            debugPrint(GlobalValues.code);
-            dropdownValue = value;
           });
         },
         items: languages.map<DropdownMenuItem<String>>((String value) {
@@ -122,9 +102,7 @@ class _FontDropdownButtonState extends State<FontDropdownButton> {
         style: const TextStyle(color: Colors.white),
         onChanged: (double? value) {
           setState(() {
-            GlobalValues.font = value!;
-            debugPrint(GlobalValues.font.toString());
-            dropdownValue = value;
+            dropdownValue = value!;
           });
         },
         items: fonts.map<DropdownMenuItem<double>>((double value) {

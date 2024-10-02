@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/internal/routes.dart';
+import 'package:idekiller/core/internal/routes.dart';
 
 class Application extends StatelessWidget {
   const Application({super.key});

@@ -2,7 +2,7 @@
 //
 // import 'package:flutter/material.dart';
 // import 'package:get/get.dart';
-// import 'package:idekiller/presentation/home_page.dart';
+// import 'package:idekiller/presentation/home_screen.dart';
 // import 'package:idekiller/screens/compiler.dart';
 // import 'package:idekiller/utils/routes.dart';
 // import 'package:shared_preferences/shared_preferences.dart';

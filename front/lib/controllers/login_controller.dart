@@ -1,7 +1,7 @@
 // import 'dart:convert';
 //
 // import 'package:idekiller/controllers/model.dart';
-// import 'package:idekiller/presentation/home_page.dart';
+// import 'package:idekiller/presentation/home_screen.dart';
 // import 'package:idekiller/utils/routes.dart';
 // import 'package:flutter/material.dart';
 // import 'package:http/http.dart' as http;

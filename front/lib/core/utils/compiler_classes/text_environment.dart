@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/utils/compiler_classes/text_box.dart';
+import 'package:idekiller/core/utils/compiler_classes/text_box.dart';
 class TextEnvironment extends StatelessWidget {
   final TextEditingController textEditingController;
 
