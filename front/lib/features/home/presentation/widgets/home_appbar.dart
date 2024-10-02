@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/core/utils/compiler_classes/buttons.dart';
-import 'package:idekiller/core/utils/compiler_classes/dropdown_button.dart';
-import 'package:idekiller/core/utils/compiler_classes/save_code_button.dart';
+import 'package:idekiller/features/home/presentation/widgets/font_dropdown.dart';
+import 'package:idekiller/features/home/presentation/widgets/language_dropdown.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppbar({super.key});
@@ -17,22 +16,39 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.white,
         ),
       ),
-      actions: const [
+      actions: [
         Align(
           alignment: Alignment.centerRight,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              FontDropdownButton(),
-              SizedBox(
+              const FontDropdown(),
+              const SizedBox(
                 width: 40,
               ),
-              LanguageDropdownButton(),
-              SizedBox(
+              const LanguageDropdown(),
+              const SizedBox(
                 width: 20,
               ),
-              SaveCodeButton(),
-              RegistrationPage(),
+              IconButton(
+                icon: const Icon(
+                  Icons.add_box_rounded,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  saveCodeDialog(context);
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.account_box,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
             ],
           ),
         ),
@@ -42,4 +58,65 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
+}
+
+Future<void> saveCodeDialog(BuildContext context) {
+  return showDialog(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Column(
+        children: [
+          Text("Please login to save snippet to your personal account"),
+          SizedBox(
+            height: 20,
+          ),
+          Divider(
+            color: Colors.black,
+            height: 2,
+          ),
+        ],
+      ),
+      content: const Text(
+        "Login with",
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 24),
+      ),
+      actions: <Widget>[
+        Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  color: Colors.red,
+                  padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
+                  child: const Text(
+                    "Email",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                },
+                child: Container(
+                  color: Colors.blue,
+                  padding: const EdgeInsets.fromLTRB(50, 10, 50, 10),
+                  child: const Text(
+                    "Phone",
+                    style: TextStyle(color: Colors.white, fontSize: 14),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
 }

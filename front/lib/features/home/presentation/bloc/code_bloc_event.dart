@@ -1,20 +1,25 @@
-sealed class CodeBlocEvent {}
-
-class CodeBlocEventFetch extends CodeBlocEvent {}
-class CodeBlocEventLanguageChange extends CodeBlocEvent {
+sealed class CodeBlocEvent {
+  final String code;
+  final double fontSize;
   final String language;
+  final String words;
 
-  CodeBlocEventLanguageChange(this.language);
+  CodeBlocEvent(this.code, this.fontSize, this.language, this.words);
+}
+
+class CodeBlocEventFetch extends CodeBlocEvent {
+  CodeBlocEventFetch(super.code, super.fontSize, super.language, super.words);
+}
+
+class CodeBlocEventLanguageChange extends CodeBlocEvent {
+  CodeBlocEventLanguageChange(super.code, super.fontSize, super.language, super.words);
+
 }
 
 class CodeBlocEventFontChange extends CodeBlocEvent {
-  final double fontSize;
-
-  CodeBlocEventFontChange(this.fontSize);
+  CodeBlocEventFontChange(super.code, super.fontSize, super.language, super.words);
 }
 
 class CodeBlocEventRun extends CodeBlocEvent {
+  CodeBlocEventRun(super.code, super.fontSize, super.language, super.words);
 }
-
-
-

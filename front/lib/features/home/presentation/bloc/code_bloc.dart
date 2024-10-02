@@ -1,32 +1,40 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:idekiller/core/utils/compiler_classes/text_box.dart';
 import 'package:idekiller/core/utils/initial_codes.dart';
+import 'package:idekiller/features/home/domain/repository/response_repository.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
 
 class CodeBloc extends Bloc<CodeBlocEvent, CodeBlocState> {
-  CodeBloc() : super(CodeBlocStateInitial("java", 16)) {
+  CodeBloc(this._responseRepository)
+      : super(CodeBlocStateInitial(initialCodes["Java"]!, 16, "Java", "")) {
     on<CodeBlocEventLanguageChange>(_onLanguageChange);
     on<CodeBlocEventFontChange>(_onFontChange);
     on<CodeBlocEventRun>(_onCodeRun);
 
-    add(CodeBlocEventLanguageChange("Java"));
+    add(CodeBlocEventLanguageChange(initialCodes["Java"]!, 16, "Java", ""));
   }
 
   void _onLanguageChange(
       CodeBlocEventLanguageChange event, Emitter<CodeBlocState> emit) {
-    emit((state as CodeBlocStateInitial).copyWith(code: initialCodes[event.language]));
+    emit(CodeBlocStateInitial(
+        initialCodes[event.language]!, event.fontSize, event.language, ""));
   }
 
   void _onFontChange(
       CodeBlocEventFontChange event, Emitter<CodeBlocState> emit) {
-    emit((state as CodeBlocStateInitial).copyWith(fontSize: event.fontSize));
+    emit(CodeBlocStateInitial(
+        initialCodes[event.language]!, event.fontSize, event.language, ""));
   }
 
-  void _onCodeRun(
-      CodeBlocEventRun event, Emitter<CodeBlocState> emit) {
-    sendRequest(
-        state.code);
-    emit(CodeBlocStateLoading(state.code, state.fontSize));
+  Future<void> _onCodeRun(
+      CodeBlocEventRun event, Emitter<CodeBlocState> emit) async {
+    emit(CodeBlocStateLoading(
+        state.code, state.fontSize, state.language, state.response));
+    final response = await _responseRepository.getResponse(
+        code: event.code, language: event.language, words: event.words);
+    emit(CodeBlocStateLoaded(
+        state.code, state.fontSize, state.language, response.response));
   }
+
+  final ResponseRepository _responseRepository;
 }
