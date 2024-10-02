@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:idekiller/features/compiler/presentation/home_screen.dart';
+import 'package:idekiller/features/home/presentation/home_screen.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[

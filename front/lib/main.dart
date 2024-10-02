@@ -1,9 +1,19 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:idekiller/core/internal/application.dart';
+import 'package:idekiller/core/internal/dependencies/set_up.dart';
+import 'package:idekiller/features/home/domain/repository/response_repository.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:flutter/material.dart';
 
-
-void main() {
+Future<void> main() async {
   setPathUrlStrategy();
-  runApp(const Application());
+  await setUp();
+  runApp(
+    BlocProvider(
+      create: (BuildContext context) => CodeBloc(GetIt.I<ResponseRepository>()),
+      child: const Application(),
+    ),
+  );
 }
