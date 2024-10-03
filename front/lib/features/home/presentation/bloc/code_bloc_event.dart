@@ -13,7 +13,6 @@ class CodeBlocEventFetch extends CodeBlocEvent {
 
 class CodeBlocEventLanguageChange extends CodeBlocEvent {
   CodeBlocEventLanguageChange(super.code, super.fontSize, super.language, super.words);
-
 }
 
 class CodeBlocEventFontChange extends CodeBlocEvent {
