@@ -4,7 +4,14 @@ import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
 
-const List<double> fonts = <double>[10, 12, 14, 16, 18, 20];
+List<double?> get fontList {
+  final Set<double> top = <double>{10, 12, 14, 16, 18, 20};
+  return <double>[
+    ...top,
+    // null, // Divider
+    // ...codeSnippets.keys.where((el) => !top.contains(el))
+  ];
+}
 
 class FontDropdown extends StatefulWidget {
   const FontDropdown({super.key});
@@ -14,32 +21,27 @@ class FontDropdown extends StatefulWidget {
 }
 
 class _FontDropdownState extends State<FontDropdown> {
-  var dropdownValue = fonts[2];
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context,CodeBlocState state) => DropdownButtonHideUnderline(
+      builder: (BuildContext context, CodeBlocState state) =>
+          DropdownButtonHideUnderline(
         child: DropdownButton<double>(
           iconSize: 0,
-          dropdownColor: const Color.fromARGB(255, 28, 40, 52),
-          value: dropdownValue,
+          value: state.fontSize,
           elevation: 16,
           style: const TextStyle(color: Colors.white),
-          onChanged: (double? value) {
-            setState(() {
-              dropdownValue = value!;
-              context
-                  .read<CodeBloc>()
-                  .add(CodeBlocEventFontChange(state.code, dropdownValue, state.language, state.response));
-            });
-          },
-          items: fonts.map<DropdownMenuItem<double>>((double value) {
+          items: fontList.map<DropdownMenuItem<double>>((double? value) {
             return DropdownMenuItem<double>(
               value: value,
               child: Text(value.toString()),
             );
           }).toList(),
+          icon: Icon(Icons.code, color: Colors.white),
+          onChanged: (value) {
+            context.read<CodeBloc>().add(CodeBlocEventFontChange(value!));
+          },
+          dropdownColor: const Color.fromARGB(255, 28, 40, 52),
         ),
       ),
     );

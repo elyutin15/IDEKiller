@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:idekiller/features/home/presentation/widgets/font_dropdown.dart';
 import 'package:idekiller/features/home/presentation/widgets/language_dropdown.dart';
+import 'package:idekiller/features/home/presentation/widgets/theme_dropdown.dart';
 
 class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppbar({super.key});
@@ -24,11 +25,15 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
             children: [
               const FontDropdown(),
               const SizedBox(
-                width: 40,
+                width: 12,
               ),
               const LanguageDropdown(),
               const SizedBox(
-                width: 20,
+                width: 12,
+              ),
+              const ThemeDropdown(),
+              const SizedBox(
+                width: 12,
               ),
               IconButton(
                 icon: const Icon(

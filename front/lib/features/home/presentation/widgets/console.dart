@@ -23,30 +23,33 @@ class _ConsoleState extends State<Console> {
   Widget build(BuildContext context) {
     return BlocBuilder<CodeBloc, CodeBlocState>(
       builder: (BuildContext context, state) {
-        if (widget.consoleType == ConsoleType.output) {
-          textEditingController.text = state.response;
+        if(state is CodeBlocStateLoaded) {
+          if(widget.consoleType == ConsoleType.output) {
+            textEditingController.text = state.response;
+          }
+          return RawKeyboardListener(
+            focusNode: FocusNode(),
+            onKey: (event) {
+              if (event is RawKeyDownEvent &&
+                  event.isKeyPressed(LogicalKeyboardKey.enter)) {}
+              if (event is RawKeyDownEvent &&
+                  event.isKeyPressed(LogicalKeyboardKey.backspace)) {}
+            },
+            child: TextField(
+              readOnly: !widget.readOnly,
+              style: TextStyle(
+                fontSize: state.fontSize,
+                color: Colors.white,
+              ),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+              ),
+              controller: textEditingController,
+              maxLines: null,
+            ),
+          );
         }
-        return RawKeyboardListener(
-          focusNode: FocusNode(),
-          onKey: (event) {
-            if (event is RawKeyDownEvent &&
-                event.isKeyPressed(LogicalKeyboardKey.enter)) {}
-            if (event is RawKeyDownEvent &&
-                event.isKeyPressed(LogicalKeyboardKey.backspace)) {}
-          },
-          child: TextField(
-            readOnly: !widget.readOnly,
-            style: TextStyle(
-              fontSize: state.fontSize,
-              color: Colors.white,
-            ),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-            ),
-            controller: textEditingController,
-            maxLines: null,
-          ),
-        );
+        return Container();
       },
     );
   }

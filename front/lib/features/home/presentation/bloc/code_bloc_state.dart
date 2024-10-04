@@ -2,29 +2,31 @@ sealed class CodeBlocState {
   final String code;
   final double fontSize;
   final String language;
-  final String response;
+  final String theme;
 
-  CodeBlocState(this.code, this.fontSize, this.language, this.response);
+
+  CodeBlocState(this.code, this.fontSize, this.language, this.theme);
 }
 
 class CodeBlocStateInitial extends CodeBlocState {
-  CodeBlocStateInitial(super.code, super.fontSize, super.language, super.response);
+  CodeBlocStateInitial(super.code, super.fontSize, super.language, super.theme);
 
-  CodeBlocStateInitial copyWith({String? code, double? fontSize, String? language, String? response}) {
+  CodeBlocStateInitial copyWith({String? code, double? fontSize, String? language, String? theme}) {
     return CodeBlocStateInitial(
       code ?? this.code,
       fontSize ?? this.fontSize,
       language ?? this.language,
-      response ?? this.response
+      theme ?? this.theme,
     );
   }
 }
 class CodeBlocStateLoading extends CodeBlocState {
-  CodeBlocStateLoading(super.code, super.fontSize, super.language, super.response);
+  CodeBlocStateLoading(super.code, super.fontSize, super.language, super.theme);
 }
 
 class CodeBlocStateLoaded extends CodeBlocState {
-  CodeBlocStateLoaded(super.code, super.fontSize, super.language, super.response);
+  final String response;
+  CodeBlocStateLoaded(super.code, super.fontSize, super.language, super.theme, this.response);
 }
 
 class CodeBlocStateError extends CodeBlocState {

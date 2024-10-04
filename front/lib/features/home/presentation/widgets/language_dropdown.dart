@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idekiller/core/utils/code_snippets.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
 
-const List<String> languages = <String>['Java', 'C++', 'C', 'Python'];
+List<String?> get languageList {
+  const top = <String>{
+    "java",
+    "cpp",
+    "python",
+  };
+  return <String?>[
+    ...top,
+    null, // Divider
+    ...codeSnippets.keys.where((el) => !top.contains(el))
+  ];
+}
 
 class LanguageDropdown extends StatefulWidget {
   const LanguageDropdown({super.key});
@@ -14,34 +26,29 @@ class LanguageDropdown extends StatefulWidget {
 }
 
 class _LanguageDropdownState extends State<LanguageDropdown> {
-  String dropdownValue = "Java";
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context, CodeBlocState state) =>
-          DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          iconSize: 0,
-          dropdownColor: const Color.fromARGB(255, 28, 40, 52),
-          value: dropdownValue,
-          elevation: 16,
-          style: const TextStyle(color: Colors.white),
-          onChanged: (String? value) {
-            setState(() {
-              dropdownValue = value!;
-              context.read<CodeBloc>().add(CodeBlocEventLanguageChange(
-                  state.code, state.fontSize, dropdownValue, state.response));
-            });
-          },
-          items: languages.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
+      builder: (BuildContext context, CodeBlocState state) {
+        return DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: state.language,
+            items: languageList.map((String? value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: value == null
+                    ? Divider()
+                    : Text(value, style: TextStyle(color: Colors.white)),
+              );
+            }).toList(),
+            icon: Icon(Icons.code, color: Colors.white),
+            onChanged: (value) {
+              context.read<CodeBloc>().add(CodeBlocEventLanguageChange(value!));
+            },
+            dropdownColor: const Color.fromARGB(255, 28, 40, 52),
+          ),
+        );
+      },
     );
   }
 }
