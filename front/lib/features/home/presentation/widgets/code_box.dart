@@ -5,9 +5,8 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:highlight/languages/all.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
-import 'package:idekiller/features/home/presentation/widgets/themes.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_event.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 
 class CustomCodeBox extends StatefulWidget {
   const CustomCodeBox({super.key});
@@ -46,8 +45,8 @@ class _CustomCodeBoxState extends State<CustomCodeBox> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context, CodeBlocState state) {
+    return BlocBuilder<CodeBloc, CodeState>(
+      builder: (BuildContext context, CodeState state) {
         final length = _codeController!.selection.baseOffset;
         _codeController!.text = state.code;
         _codeController!.selection =
@@ -59,17 +58,10 @@ class _CustomCodeBoxState extends State<CustomCodeBox> {
               TextStyle(fontFamily: 'SourceCode', fontSize: state.fontSize),
           maxLines: null,
           onChanged: (value) {
-            context.read<CodeBloc>().add(CodeBlocEventCodeChange(value));
+            context.read<CodeBloc>().add(CodeChangeEvent(value));
           },
         );
       },
-    );
-  }
-
-  Widget _buildCodeField() {
-    return CodeField(
-      controller: _codeController!,
-      textStyle: TextStyle(fontFamily: 'SourceCode'),
     );
   }
 }

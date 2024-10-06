@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_event.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 import 'package:idekiller/features/home/presentation/widgets/themes.dart';
 
 List<String?> get themeList {
@@ -31,8 +31,8 @@ class ThemeDropdown extends StatefulWidget {
 class _ThemeDropdownState extends State<ThemeDropdown> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context, CodeBlocState state) =>
+    return BlocBuilder<CodeBloc, CodeState>(
+      builder: (BuildContext context, CodeState state) =>
           DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: state.theme,
@@ -46,7 +46,7 @@ class _ThemeDropdownState extends State<ThemeDropdown> {
           }).toList(),
           icon: Icon(Icons.color_lens, color: Colors.white),
           onChanged: (value) {
-            context.read<CodeBloc>().add(CodeBlocEventThemeChange(value!));
+            context.read<CodeBloc>().add(CodeThemeChangeEvent(value!));
           },
           dropdownColor: const Color.fromARGB(255, 28, 40, 52),
         ),

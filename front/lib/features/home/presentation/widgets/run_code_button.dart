@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_event.dart';
 
 class RunCodeButton extends StatefulWidget {
   const RunCodeButton({super.key});
@@ -15,7 +15,7 @@ class _RunCodeButtonState extends State<RunCodeButton> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context.read<CodeBloc>().add(CodeBlocEventRun());
+        context.read<CodeBloc>().add(CodeRunEvent());
       },
       style: ButtonStyle(
         backgroundColor:

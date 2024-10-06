@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 
 enum ConsoleType { input, output }
 
@@ -21,9 +21,9 @@ class _ConsoleState extends State<Console> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
+    return BlocBuilder<CodeBloc, CodeState>(
       builder: (BuildContext context, state) {
-        if(state is CodeBlocStateLoaded) {
+        if(state is CodeLoadedState) {
           if(widget.consoleType == ConsoleType.output) {
             textEditingController.text = state.response;
           }

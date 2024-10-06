@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoadingAnimation extends StatefulWidget {
@@ -14,9 +14,9 @@ class LoadingAnimation extends StatefulWidget {
 class _LoadingAnimationState extends State<LoadingAnimation> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
+    return BlocBuilder<CodeBloc, CodeState>(
       builder: (BuildContext context, state) {
-        return (state is CodeBlocStateLoading)
+        return (state is CodeLoadingState)
             ? SizedBox(
                 child: LoadingAnimationWidget.staggeredDotsWave(
                   size: 30,

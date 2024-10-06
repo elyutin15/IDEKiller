@@ -3,10 +3,10 @@ import 'package:idekiller/features/home/data/api/service/service.dart';
 import 'package:idekiller/features/home/data/mapper/response_mapper.dart';
 import 'package:idekiller/features/home/domain/entity/response_entity.dart';
 
-class ApiUtil {
+class HomeAppUtil {
   final Service _service;
 
-  ApiUtil(this._service);
+  HomeAppUtil(this._service);
 
   Future<ResponseEntity> getResponse({
     required String code,

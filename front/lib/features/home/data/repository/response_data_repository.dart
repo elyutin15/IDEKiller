@@ -1,9 +1,9 @@
-import 'package:idekiller/features/home/data/api/app_util.dart';
+import 'package:idekiller/features/home/data/api/home_app_util.dart';
 import 'package:idekiller/features/home/domain/entity/response_entity.dart';
 import 'package:idekiller/features/home/domain/repository/response_repository.dart';
 
 class ResponseDataRepository extends ResponseRepository {
-  final ApiUtil _apiUtil;
+  final HomeAppUtil _apiUtil;
 
   ResponseDataRepository(this._apiUtil);
 

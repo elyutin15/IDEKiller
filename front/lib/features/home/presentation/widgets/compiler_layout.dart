@@ -2,7 +2,7 @@ import 'package:code_text_field/code_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 import 'package:idekiller/features/home/presentation/widgets/code_box.dart';
 import 'package:idekiller/features/home/presentation/widgets/console.dart';
 import 'package:idekiller/features/home/presentation/widgets/loading_animation.dart';
@@ -10,18 +10,18 @@ import 'package:idekiller/features/home/presentation/widgets/run_code_button.dar
 import 'package:idekiller/features/home/presentation/widgets/stop_code_button.dart';
 import 'package:idekiller/features/home/presentation/widgets/themes.dart';
 
-class MainScrollablePage extends StatefulWidget {
-  const MainScrollablePage({super.key});
+class CompilerLayout extends StatefulWidget {
+  const CompilerLayout({super.key});
 
   @override
-  State<MainScrollablePage> createState() => _MainScrollablePageState();
+  State<CompilerLayout> createState() => _CompilerLayoutState();
 }
 
-class _MainScrollablePageState extends State<MainScrollablePage> {
+class _CompilerLayoutState extends State<CompilerLayout> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context, CodeBlocState state) {
+    return BlocBuilder<CodeBloc, CodeState>(
+      builder: (BuildContext context, CodeState state) {
         final styles = themes[state.theme];
         const rootKey = 'root';
         return CodeTheme(
@@ -37,7 +37,7 @@ class _MainScrollablePageState extends State<MainScrollablePage> {
                       children: [
                         Align(
                           alignment: Alignment.topCenter,
-                          child: CustomCodeBox(),
+                          child: SingleChildScrollView(child: CustomCodeBox()),
                         ),
                         const Positioned(
                           top: 10,

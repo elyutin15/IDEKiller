@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:idekiller/core/internal/routes.dart';
 import 'package:idekiller/features/home/presentation/widgets/font_dropdown.dart';
 import 'package:idekiller/features/home/presentation/widgets/language_dropdown.dart';
 import 'package:idekiller/features/home/presentation/widgets/theme_dropdown.dart';
@@ -51,7 +53,9 @@ class HomeAppbar extends StatelessWidget implements PreferredSizeWidget {
                     Icons.account_box,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.go("/login");
+                  },
                 ),
               ),
             ],

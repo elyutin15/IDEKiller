@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:idekiller/features/home/presentation/bloc/code_bloc.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_event.dart';
-import 'package:idekiller/features/home/presentation/bloc/code_bloc_state.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_event.dart';
+import 'package:idekiller/features/home/presentation/bloc/code_state.dart';
 
 List<double?> get fontList {
   final Set<double> top = <double>{10, 12, 14, 16, 18, 20};
@@ -23,8 +23,8 @@ class FontDropdown extends StatefulWidget {
 class _FontDropdownState extends State<FontDropdown> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CodeBloc, CodeBlocState>(
-      builder: (BuildContext context, CodeBlocState state) =>
+    return BlocBuilder<CodeBloc, CodeState>(
+      builder: (BuildContext context, CodeState state) =>
           DropdownButtonHideUnderline(
         child: DropdownButton<double>(
           iconSize: 0,
@@ -39,7 +39,7 @@ class _FontDropdownState extends State<FontDropdown> {
           }).toList(),
           icon: Icon(Icons.code, color: Colors.white),
           onChanged: (value) {
-            context.read<CodeBloc>().add(CodeBlocEventFontChange(value!));
+            context.read<CodeBloc>().add(CodeFontChangeEvent(value!));
           },
           dropdownColor: const Color.fromARGB(255, 28, 40, 52),
         ),

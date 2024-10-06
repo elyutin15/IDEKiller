@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:idekiller/features/home/presentation/widgets/compiler_layout.dart';
+import 'package:idekiller/features/auth/presentation/widgets/login_layout.dart';
 
 class Body extends StatelessWidget {
   const Body({super.key});
@@ -10,7 +10,7 @@ class Body extends StatelessWidget {
       children: [
         Divider(height: 0, color: Colors.black),
         Expanded(
-          child: CompilerLayout(),
+          child: LoginLayout(),
         ),
       ],
     );
