@@ -1,0 +1,3 @@
+[submodule "ide_killer_auth"]
+	path = ide_killer_auth
+	url = https://github.com/CpedniyNikon/ide_killer_auth.git
